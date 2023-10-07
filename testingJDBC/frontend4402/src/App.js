@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [message, setMessage] = useState('');
+    const [result, setResult] = useState('');
+
+    useEffect(() => {
+        // Fetch a simple greeting message
+        axios.get('http://localhost:8080/api/hello')
+            .then(response => setMessage(response.data))
+            .catch(error => console.error('Error:', error));
+    }, []);
+
+    const addNumbers = () => {
+        // Send a POST request with JSON data
+        axios.post('http://localhost:8080/api/add', { num1: 5, num2: 7 })
+            .then(response => setResult(response.data))
+            .catch(error => console.error('Error:', error));
+    };
+
+    return (
+        <div>
+            <p>{message}</p>
+            <button onClick={addNumbers}>Add Numbers</button>
+            <p>{result}</p>
+        </div>
+    );
 }
 
 export default App;
