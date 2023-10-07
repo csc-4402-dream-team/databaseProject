@@ -13,7 +13,7 @@ public class Controller {
     }
     @PostMapping("/add")
     public String addNumbers(@RequestBody Map<String, Integer> numbers) {
-        int result = 100 + 100;
+        int result = numbers.get("num1") + numbers.get("num2");
         return "The result is: " + result;
     }
 }
