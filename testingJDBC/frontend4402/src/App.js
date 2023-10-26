@@ -27,25 +27,34 @@ function App() {
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
   const [result, setResult] = useState('');
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    // Create the database locally on load
+  axios.post('http://localhost:8080/api/createDatabase')
+  .then(response => setResult(`${response.data}`))
+  .catch(error => console.error('Error:', error));  
+}, []);
 
 
   useEffect(() => {
     // Fetch a simple greeting message
     axios.get('http://localhost:8080/api/hello')
         .then(response => setMessage(response.data))
-        .catch(error => console.error('Error:', error));
+        .catch(error => setMessage('Error connecting to backend:', error));
 }, []);
+
 
   const addNumbers = () => {
     // Send a POST request with JSON data
     axios.post('http://localhost:8080/api/add', { num1, num2 })
-      .then(response => setResult(`${response.data}`))
+      .then(response => setData(`${response.data}`))
       .catch(error => console.error('Error:', error));
   };
 
   return (
     <div style={containerStyle}>
-      <h1>Spring Connection Example</h1>
+      <h1>CSC 4402 Example</h1>
       <div>{message}</div>
       <div style={inputContainerStyle}>
         <label>
@@ -70,7 +79,9 @@ function App() {
       <button onClick={addNumbers} style={buttonStyle}>
         Add Numbers
       </button>
+      <div><p></p></div>
       <div>{result}</div>
+      <div>{data}</div>
     </div>
   );
 }
