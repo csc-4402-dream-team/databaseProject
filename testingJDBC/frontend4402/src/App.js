@@ -28,20 +28,41 @@ function App() {
   const [num2, setNum2] = useState(0);
   const [result, setResult] = useState('');
   const [data, setData] = useState('');
+  const [table, setTable] = useState('');
+  const [populate, setPopulate] = useState('');
 
   useEffect(() => {
     // Create the database locally on load
-  axios.post('http://localhost:8080/api/createDatabase')
-  .then(response => setResult(`${response.data}`))
-  .catch(error => console.error('Error:', error));  
-}, []);
+    axios.post('http://localhost:8080/api/createDatabase')
+      .then((response) => {
+        setResult(`${response.data}`);
+        // If the database was created successfully, proceed to create tables
+        if (response.data.includes('created successfully')) {
+          console.log("HERE");
+          axios.post('http://localhost:8080/api/createTables')
+            .then((response) => {
+              setTable(`${response.data}`);
+              // axios.post('http://localhost:8080/api/populateDatabase')
+              // .then((response) => {
+              //   setPopulate(`${response.data}`);
+              // })
+              // .catch((error) => setPopulate('Error populating database. ', error));
+            })
+            .catch((error) => setTable('Error creating tables. ', error));
+        }
+      })
+      .catch((error) => setData('Error creating database. ', error));
+  }, []);
+  
 
 
   useEffect(() => {
     // Fetch a simple greeting message
     axios.get('http://localhost:8080/api/hello')
         .then(response => setMessage(response.data))
-        .catch(error => setMessage('Error connecting to backend:', error));
+        .catch(error => setMessage('Error connecting to backend and database.\nPlease make sure backend is up and running at ' + 
+                                    'http://localhost:8080.\nIf it is not, open the backend4402 folder and ' + 
+                                    'run the main class in Backend4402Application.'));
 }, []);
 
 
@@ -56,6 +77,7 @@ function App() {
     <div style={containerStyle}>
       <h1>CSC 4402 Example</h1>
       <div>{message}</div>
+      <div><p></p></div>
       <div style={inputContainerStyle}>
         <label>
           Number 1:
@@ -82,6 +104,8 @@ function App() {
       <div><p></p></div>
       <div>{result}</div>
       <div>{data}</div>
+      <div>{table}</div>
+      {/* <div>{populate}</div> */}
     </div>
   );
 }
