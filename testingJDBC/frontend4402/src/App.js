@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AgentList from './components/AgentList';
 
 const containerStyle = {
   display: 'flex',
@@ -27,10 +26,7 @@ function App() {
   const [message, setMessage] = useState('');
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
-  const [result, setResult] = useState('');
   const [data, setData] = useState('');
-  const [table, setTable] = useState('');
-  const [populate, setPopulate] = useState('');
 
   useEffect(() => {
     // Fetch a simple greeting message
@@ -77,7 +73,7 @@ function App() {
       <button onClick={addNumbers} style={buttonStyle}>
         Add Numbers
       </button>
-      <AgentList></AgentList>
+      <p>{data}</p>
     </div>
   );
 }
