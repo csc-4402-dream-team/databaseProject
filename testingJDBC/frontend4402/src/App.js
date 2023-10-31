@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AgentList from './components/AgentList';
 
 const containerStyle = {
   display: 'flex',
@@ -30,31 +31,6 @@ function App() {
   const [data, setData] = useState('');
   const [table, setTable] = useState('');
   const [populate, setPopulate] = useState('');
-
-  useEffect(() => {
-    // Create the database locally on load
-    axios.post('http://localhost:8080/api/createDatabase')
-      .then((response) => {
-        setResult(`${response.data}`);
-        // If the database was created successfully, proceed to create tables
-        if (response.data.includes('created successfully')) {
-          console.log("HERE");
-          axios.post('http://localhost:8080/api/createTables')
-            .then((response) => {
-              setTable(`${response.data}`);
-              // axios.post('http://localhost:8080/api/populateDatabase')
-              // .then((response) => {
-              //   setPopulate(`${response.data}`);
-              // })
-              // .catch((error) => setPopulate('Error populating database. ', error));
-            })
-            .catch((error) => setTable('Error creating tables. ', error));
-        }
-      })
-      .catch((error) => setData('Error creating database. ', error));
-  }, []);
-  
-
 
   useEffect(() => {
     // Fetch a simple greeting message
@@ -101,11 +77,7 @@ function App() {
       <button onClick={addNumbers} style={buttonStyle}>
         Add Numbers
       </button>
-      <div><p></p></div>
-      <div>{result}</div>
-      <div>{data}</div>
-      <div>{table}</div>
-      {/* <div>{populate}</div> */}
+      <AgentList></AgentList>
     </div>
   );
 }
