@@ -27,7 +27,7 @@ Follow these steps to get the project up and running:
 
 ### Frontend (React)
 
-1. Open a terminal and navigate to the `frontend` directory in your project.
+1. Open a terminal and navigate to the `frontend` directory in our project.
 
 2. Install project dependencies by running:
     
@@ -56,7 +56,7 @@ database.
 
 ### Additional Notes
 
-- The SQL execution feature is available on the frontend for testing SQL statements. 
+- The SQL console execution feature is available on the frontend for testing pure SQL statements.
 
 ## Usage
 
@@ -67,8 +67,3 @@ The application provides functionality to manage clients, agents, properties, cl
 - [Sadie Forbes](https://github.com/sadief630)
 - Calvin Feldt
 - {Other team members add names here}
-
-## Acknowledgments
-
-- extra stuff here
-
