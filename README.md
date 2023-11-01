@@ -11,7 +11,7 @@ Before running the project, ensure you have the following prerequisites installe
 - [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-downloads.html) - version 11 or higher.
 - [Node.js](https://nodejs.org/) - version 14 or higher.
 - [npm](https://www.npmjs.com/) - This is included with Node.js.
-- [Spring Tool Suite (STS)](https://spring.io/tools) - Recommended for editing and building the Spring Boot application (optional).
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) - Recommended for running and building the Spring Boot application.
 
 ## Getting Started
 
@@ -19,9 +19,9 @@ Follow these steps to get the project up and running:
 
 ### Backend (Spring Boot)
 
-1. Open the Spring Boot project in your preferred Java IDE or Spring Tool Suite (STS).
+1. Open the Spring Boot project in your preferred Java IDE. We used IntelliJ.
 
-2. Build the project using Maven or Gradle.
+2. Build the project using Maven.
 
 3. Start the Spring Boot application. This will run the backend server on port 8080.
 
@@ -37,45 +37,34 @@ Follow these steps to get the project up and running:
 
     npm start
 
-
 This will start the frontend application on port 3000.
 
 ### Database Configuration
 
 By default, this project uses an in-memory H2 database for development. You can configure the database settings in the `application.properties` file in the backend project.
 
-### Accessing the Application
+### Accessing the Application User Interface
 
 - Open your web browser and go to [http://localhost:3000](http://localhost:3000) to access the frontend.
 
+
+### Accessing the Database console
+
+- Open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the frontend.
+
 ### Additional Notes
 
-- The SQL execution feature is available on the frontend for testing SQL statements. Be cautious when using this feature.
+- The SQL execution feature is available on the frontend for testing SQL statements. 
 
 ## Usage
 
 The application provides functionality to manage clients, agents, properties, client inquiries, and property images. Use the web interface to add, view, update, or delete records in the database.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please follow our [contribution guidelines](CONTRIBUTING.md).
-
-## Support
-
-If you encounter any issues or have questions, please [open an issue](https://github.com/yourproject/issues) on the project's GitHub repository.
-
 ## Authors
 
-- [Your Name](https://github.com/yourname) - [Your Website](https://yourwebsite.com)
+- [Sadie Forbes](https://github.com/sadief630)
 
 ## Acknowledgments
 
-- Acknowledgment 1
-- Acknowledgment 2
-- ...
-
+- extra stuff here
 
