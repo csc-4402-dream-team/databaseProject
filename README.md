@@ -58,8 +58,7 @@ database.
 
 - The SQL console execution feature is available on the frontend for testing pure SQL statements.
 - In order for the project to work, you must have both the frontend running on port 3000 and the backend running on port 8080.
-- 
-
+  
 ## Usage
 
 The application provides functionality to manage clients, agents, properties, client inquiries, and property images. Use the web interface to add, view, update, or delete records in the database.
