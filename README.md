@@ -63,6 +63,8 @@ The application provides functionality to manage clients, agents, properties, cl
 ## Authors
 
 - [Sadie Forbes](https://github.com/sadief630)
+- Calvin Feldt
+- {Other team members add names here}
 
 ## Acknowledgments
 
