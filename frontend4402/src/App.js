@@ -40,7 +40,7 @@ const buttonStyle = {
 
 function App() {
   const [message, setMessage] = useState('');
-  const [sql, setSql] = useState(0);
+  const [sql, setSql] = useState('');
   const [result, setResult] = useState([]); // State to store the API response
 
   useEffect(() => {
