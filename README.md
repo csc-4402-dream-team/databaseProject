@@ -47,16 +47,18 @@ database.
 
 ### Accessing the Application User Interface
 
-- Open your web browser and go to [http://localhost:3000](http://localhost:3000) to access the frontend.
+- Once you have the frontend and backend running, open your web browser and go to [http://localhost:3000](http://localhost:3000) to access the frontend.
 
 
 ### Accessing the Database console
 
-- Open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the database console (not required).
+- Once you have the frontend and backend running, open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the database console (not required).
 
 ### Additional Notes
 
 - The SQL console execution feature is available on the frontend for testing pure SQL statements.
+- In order for the project to work, you must have both the frontend running on port 3000 and the backend running on port 8080.
+- 
 
 ## Usage
 
