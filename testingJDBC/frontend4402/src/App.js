@@ -5,13 +5,29 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  fontFamily: 'monospace',
+  fontSize: '1.2rem',
   textAlign: 'center',
   marginTop: '20px',
 };
 
-const inputContainerStyle = {
-  marginBottom: '10px',
+const textAreaStyle = {
+  width: '30%',       // Set a fixed width
+  minHeight: '10%',   // Set a minimum height
+  padding: '10px',
+  resize: 'none',      // Disable resizing
+  overflowY: 'auto',   // Enable vertical scrolling if needed
 };
+
+const example = {
+  width: '30%',       // Set a fixed width
+  minHeight: '10%',   // Set a minimum height
+  padding: '10px',
+  resize: 'none',      // Disable resizing
+  fontSize: '1rem',
+  overflowY: 'auto',   // Enable vertical scrolling if needed
+};
+
 
 const buttonStyle = {
   backgroundColor: '#007bff',
@@ -24,9 +40,8 @@ const buttonStyle = {
 
 function App() {
   const [message, setMessage] = useState('');
-  const [num1, setNum1] = useState(0);
-  const [num2, setNum2] = useState(0);
-  const [data, setData] = useState('');
+  const [sql, setSql] = useState(0);
+  const [result, setResult] = useState([]); // State to store the API response
 
   useEffect(() => {
     // Fetch a simple greeting message
@@ -37,12 +52,26 @@ function App() {
                                     'run the main class in Backend4402Application.'));
 }, []);
 
+  // const executeSQL = () => {
+  //   // Send a POST request with JSON data
+  //   axios.post('http://localhost:8080/api/sql', {sql})
+  //     .then(response => setData(`${response.data}`))
+  //     .catch(error => console.error('Error:', error));
+  // };
 
-  const addNumbers = () => {
-    // Send a POST request with JSON data
-    axios.post('http://localhost:8080/api/add', { num1, num2 })
-      .then(response => setData(`${response.data}`))
-      .catch(error => console.error('Error:', error));
+  const handleExecuteSQL = () => {
+    axios.post('http://localhost:8080/api/sql', { sql: sql })
+      .then((response) => {
+        setResult(response.data);
+      })
+      .catch((error) => {
+        console.error('Error executing SQL statement:', error);
+        setResult([]);
+      });
+  };
+
+  const handleSQLChange = (e) => {
+    setSql(e.target.value);
   };
 
   return (
@@ -50,30 +79,47 @@ function App() {
       <h1>CSC 4402 Example</h1>
       <div>{message}</div>
       <div><p></p></div>
-      <div style={inputContainerStyle}>
-        <label>
-          Number 1:
-          <input
-            type="number"
-            value={num1}
-            onChange={(e) => setNum1(e.target.value)}
-          />
-        </label>
-      </div>
-      <div style={inputContainerStyle}>
-        <label>
-          Number 2:
-          <input
-            type="number"
-            value={num2}
-            onChange={(e) => setNum2(e.target.value)}
-          />
-        </label>
-      </div>
-      <button onClick={addNumbers} style={buttonStyle}>
-        Add Numbers
+      
+      <label>
+      SQL Statement:  </label>
+      <textarea
+        style={textAreaStyle}
+        value={sql}
+        onChange={handleSQLChange}
+      />
+
+      <button onClick={handleExecuteSQL} style={buttonStyle}>
+        Execute SQL
       </button>
-      <p>{data}</p>
+
+      <div>
+        <h3>Result:</h3>
+        {result.map((item, index) => (
+          <pre
+            key={index}
+            style={{
+              whiteSpace: "pre-line",
+              fontSize: "12px",
+              padding: "8px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+          >
+            {JSON.stringify(item, null, 2)}
+          </pre>
+        ))}
+      </div>
+      
+      <div style={example}>
+      example statements to try:
+      <p>SELECT * FROM CLIENT</p>
+      <p>SELECT * FROM PROPERTY</p>
+      <p>  INSERT INTO CLIENT (FIRST_NAME, LAST_NAME, EMAIL, PHONE, STREET, CITY, STATE, ZIPCODE) VALUES
+    ('John', 'Doe', 'john@example.com', '555-123-4567', '123 Main St', 'City', 'State', '12345'),
+    ('Jane', 'Smith', 'jane@example.com', '555-987-6543', '456 Elm St', 'Town', 'State', '54321');</p>
+      </div>
+  
+
     </div>
   );
 }
