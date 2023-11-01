@@ -93,10 +93,17 @@ function App() {
       </button>
 
       <div>
-        <h3>Result:</h3>
-        {result.map((item, index) => (
+      <h3>Result:</h3>
+      {result.map((item, index) => (
+        <div key={index}>
+          {item.IMAGE_DATA && (
+            <img
+            src={`data:image/jpeg;base64,${item.IMAGE_DATA}`}
+              alt="Some Image"
+              style={{ maxWidth: "100%" }}
+            />
+          )}
           <pre
-            key={index}
             style={{
               whiteSpace: "pre-line",
               fontSize: "12px",
@@ -107,8 +114,10 @@ function App() {
           >
             {JSON.stringify(item, null, 2)}
           </pre>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
+
       
       <div style={example}>
       example statements to try:
