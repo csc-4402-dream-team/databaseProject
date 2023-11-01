@@ -22,10 +22,10 @@ const textAreaStyle = {
 const example = {
   width: '30%',       // Set a fixed width
   minHeight: '10%',   // Set a minimum height
+  maxWidth: '50%',
   padding: '10px',
   resize: 'none',      // Disable resizing
   fontSize: '1rem',
-  overflowY: 'auto',   // Enable vertical scrolling if needed
 };
 
 
@@ -96,11 +96,11 @@ function App() {
       <h3>Result:</h3>
       {result.map((item, index) => (
         <div key={index}>
-          {item.IMAGE_DATA && (
+          {item.IMAGE_DATA && ( // if the data has an image, load the image.
             <img
             src={`data:image/jpeg;base64,${item.IMAGE_DATA}`}
               alt="Some Image"
-              style={{ maxWidth: "100%" }}
+              style={{ width: "200px" }}
             />
           )}
           <pre
@@ -123,6 +123,7 @@ function App() {
       example statements to try:
       <p>SELECT * FROM CLIENT</p>
       <p>SELECT * FROM PROPERTY</p>
+      <p>SELECT * FROM IMAGE</p>
       <p>  INSERT INTO CLIENT (FIRST_NAME, LAST_NAME, EMAIL, PHONE, STREET, CITY, STATE, ZIPCODE) VALUES
     ('John', 'Doe', 'john@example.com', '555-123-4567', '123 Main St', 'City', 'State', '12345'),
     ('Jane', 'Smith', 'jane@example.com', '555-987-6543', '456 Elm St', 'Town', 'State', '54321');</p>
