@@ -41,7 +41,9 @@ This will start the frontend application on port 3000.
 
 ### Database Configuration
 
-By default, this project uses an in-memory H2 database for development. You can configure the database settings in the `application.properties` file in the backend project.
+By default, this project uses an in-memory H2 database for development. We configured the default database settings in `application.properties` file in the backend project.
+Two files load and populate the database, located under the resources folder in the backend. There is schema.sql and data.sql, which creates the schema and adds dummy data to the
+database.
 
 ### Accessing the Application User Interface
 
