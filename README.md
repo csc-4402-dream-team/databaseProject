@@ -19,7 +19,7 @@ Follow these steps to get the project up and running:
 
 ### Backend (Spring Boot)
 
-1. Open the Spring Boot project in your preferred Java IDE. We used IntelliJ.
+1. Open the backend4402 folder (aka the Spring Boot project) as a JAVA PROJECT in your preferred Java IDE. I used IntelliJ and heavily recommend it.
 
 2. Build the project using Maven and run the Spring Boot application by running the main class. This will run the backend server on port 8080.
 
