@@ -1,4 +1,4 @@
-# Real Estate Agency Database Project
+# Example 4402 Database Project
 
 ## Introduction
 
