@@ -18,6 +18,7 @@ public class DatabaseService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // Returns an empty list for DDL statements and a list of results for DML statements
     public List<Map<String, Object>> executeSQLStatement(String sqlStatement) {
         List<Map<String, Object>> result = Collections.emptyList();
         try{
