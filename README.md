@@ -2,14 +2,14 @@
 
 ## Introduction
 
-This project is a real estate agency database system that allows you to manage and store information related to clients, agents, properties, client inquiries, and property images. It provides both a backend component (built with Spring Boot) and a frontend component (built with React).
+This project provides a starting point for your database project that has both a backend component (built with Spring Boot) and a frontend component (built with React).
 
 ## Prerequisites
 
 Before running the project, ensure you have the following prerequisites installed on your system:
 
 - [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-downloads.html) - version 11 or higher.
-- [Node.js](https://nodejs.org/) - version 14 or higher.
+- [Node.js](https://nodejs.org/) - version 14 or higher. 
 - [npm](https://www.npmjs.com/) - This is included with Node.js.
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) - Recommended for running and building the Spring Boot application.
 
@@ -21,9 +21,7 @@ Follow these steps to get the project up and running:
 
 1. Open the Spring Boot project in your preferred Java IDE. We used IntelliJ.
 
-2. Build the project using Maven.
-
-3. Start the Spring Boot application. This will run the backend server on port 8080.
+2. Build the project using Maven and run the Spring Boot application by running the main class. This will run the backend server on port 8080.
 
 ### Frontend (React)
 
@@ -41,18 +39,20 @@ This will start the frontend application on port 3000.
 
 ### Database Configuration
 
-By default, this project uses an in-memory H2 database for development. We configured the default database settings in `application.properties` file in the backend project.
+By default, this project uses an in-memory H2 SQL database for development. We configured the default database settings in `application.properties` file in the backend project.
 Two files load and populate the database, located under the resources folder in the backend. There is schema.sql and data.sql, which creates the schema and adds dummy data to the
-database.
+database. To create the schema and sample data for your database, you will need to change these files.
 
 ### Accessing the Application User Interface
 
 - Once you have the frontend and backend running, open your web browser and go to [http://localhost:3000](http://localhost:3000) to access the frontend.
 
-
 ### Accessing the Database console
 
 - Once you have the frontend and backend running, open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the database console (not required).
+- While not required, using the h2 console can be helpful for testing the structure and integrity of your database. You can also run example queries here.
+- The credentials to login to the h2 console should be as follows: url: jdbc:h2:mem:example username: user (and no password, so leave blank)
+- You can change the name of your database and the login credentials by changing the name (from example) in application properties.
 
 ### Additional Notes
 
@@ -61,10 +61,9 @@ database.
   
 ## Usage
 
-The application provides functionality to manage clients, agents, properties, client inquiries, and property images. Use the web interface to add, view, update, or delete records in the database.
+- Use the web interface to add, view, update, or delete records in the database.
 
 ## Authors
 
-- [Sadie Forbes](https://github.com/sadief630)
-- Calvin Feldt
-- {Other team members add names here}
+- Example project for class created by Sadie Forbes
+- {TEAM MEMBERS NAMES GO HERE}
