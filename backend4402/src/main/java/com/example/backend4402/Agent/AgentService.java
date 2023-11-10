@@ -1,8 +1,6 @@
-package com.example.backend4402;
+package com.example.backend4402.Agent;
 
-import com.example.backend4402.Client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DatabaseService {
+public class AgentService {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public DatabaseService(JdbcTemplate jdbcTemplate) {
+    public AgentService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Map<String, Object>> executeSQLStatement(String sqlStatement) {
+    public List<Map<String, Object>> executeSql(String sqlStatement) {
         List<Map<String, Object>> result = Collections.emptyList();
         try{
             result = jdbcTemplate.queryForList(sqlStatement); // For DML (SELECT) statements

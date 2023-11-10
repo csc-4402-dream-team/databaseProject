@@ -1,4 +1,4 @@
-package com.example.backend4402;
+package com.example.backend4402.Agent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,14 +14,14 @@ import java.util.Map;
 @RequestMapping("/api/agent")
 public class AgentController {
 
-    private final MyService myService;
+    private final AgentService agentService;
     @Autowired
-    public AgentController(MyService myService) {
-        this.myService = myService;
+    public AgentController(AgentService myService) {
+        this.agentService = myService;
     }
     @PostMapping("/sql")
     public List<Map<String, Object>> executeSQLStatement(@RequestBody Map<String, String> statement) {
-        return myService.executeSql(statement.get("sql")); // Call your service method here
+        return agentService.executeSql(statement.get("sql")); // Call your service method here
     }
     @PostMapping("/getAgent")
     public List<Map<String, Object>> getAgent(@RequestBody Map<String, String> arguments){
