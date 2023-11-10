@@ -1,10 +1,15 @@
 import React from 'react';
 
-const ClientDashboard = () => {
+const ClientDashboard = (client) => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Client Dashboard</h1>
-
+        <div>
+            <p>Client Name: {client.client.firstName} {client.client.lastName}</p>
+            <p>Email: {client.client.email}</p>
+            <p>Phone: {client.client.phone}</p>
+            <p>License: {client.client.licenseNumber}</p>
+        </div>
       <section style={styles.section}>
         <h2>View all properties & Images</h2>
         {/* Add content for viewing properties and images */}
@@ -22,7 +27,7 @@ const ClientDashboard = () => {
 
       <section style={styles.section}>
         <h2>View Your Agents</h2>
-        {/* Add content for viewing agent information */}
+        {/* Add content for viewing Agents information */}
       </section>
 
       <section style={styles.section}>

@@ -33,8 +33,7 @@ const AgentPage = () => {
   }else{
     return(
       <>
-      {JSON.stringify(loggedInAgent)}
-      <AgentDashboard></AgentDashboard>
+      <AgentDashboard agent={loggedInAgent}></AgentDashboard>
       </>
     )
   }

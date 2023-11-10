@@ -7,21 +7,6 @@ const ClientPage = () => {
   const[loggedInClient, setLoggedInClient] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // const [clientData, setClientData] = useState({
-  //   firstName: '',
-  //   lastName: '',
-  //   email: '',
-  //   phone: '',
-  //   street: '',
-  //   city: '',
-  //   state: '',
-  //   zipcode: '',
-  // });
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setClientData({ ...clientData, [name]: value });
-  // };
-
   const handleIDChange = (e) => {
     setClientID(e.target.value);
   };
@@ -37,23 +22,6 @@ const ClientPage = () => {
       console.error('Error getting client:', error.response);
     }
   };
-  
-  // const handleAddClient = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:8080/api/client/addClient', clientData);
-  //     const success = response.data;
-  //     console.log(response.data);
-  //     if (success) {
-  //       setLoggedIn(true);
-  //       console.log('Client added successfully');
-  //     } else {
-  //       setLoggedIn(false);
-  //       console.error('Failed to add client');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error adding client:', error);
-  //   }
-  // };
 
   if(!loggedIn){
     return (
@@ -61,31 +29,13 @@ const ClientPage = () => {
         <h2 style={styles.title}>Enter Client ID</h2>
         <input type="text" name="clientID" placeholder="Client ID" style={styles.input} onChange={handleIDChange} />
         <button style={styles.button} onClick={handleGetClient}>View Information</button>
-        
-        {/* <h2 style={styles.title}>OR</h2>
-
-        <h2 style={styles.title}>Add a New Client</h2>
-
-        <div style={styles.formContainer}>
-          <div style={styles.inputContainer}>
-            <input type="text" name="firstName" placeholder="First Name" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="lastName" placeholder="Last Name" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="email" placeholder="Email" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="phone" placeholder="Phone" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="street" placeholder="Street" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="city" placeholder="City" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="state" placeholder="State" style={styles.input} onChange={handleInputChange} />
-            <input type="text" name="zipcode" placeholder="Zipcode" style={styles.input} onChange={handleInputChange} />
-          </div>
-          <button style={styles.button} onClick={handleAddClient}>Add Client</button>
-        </div> */}
+       
       </div>
     );
   }else{
     return(
       <>
-      {JSON.stringify(loggedInClient)}
-      <ClientDashboard></ClientDashboard>
+      <ClientDashboard client={loggedInClient}></ClientDashboard>
       </>
     )
   }

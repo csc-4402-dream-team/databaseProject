@@ -1,17 +1,17 @@
 import React from 'react';
 
-/*
 
-Create a Transaction
-View their office 
-
-*/
-
-const AgentDashboard = () => {
+const AgentDashboard = (agent) => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Agent Dashboard</h1>
-
+        <div>
+            <p>Agent Name: {agent.agent.firstName} {agent.agent.lastName}</p>
+            <p>Email: {agent.agent.email}</p>
+            <p>Phone: {agent.agent.phone}</p>
+            <p>License: {agent.agent.licenseNumber}</p>
+            
+        </div>
       <section style={styles.section}>
         <h2>List a Property</h2>
         {/* Add content for listing property and uploading Images */}
