@@ -119,7 +119,7 @@ const HomePage = () => {
 
       <Services>
         <div className="service">
-          <h3>Property Listings</h3>
+          <h3>Browse Properties</h3>
           <p>Browse through a wide range of residential and commercial properties. Find the perfect match for your lifestyle and business needs.</p>
         </div>
 
@@ -129,13 +129,13 @@ const HomePage = () => {
         </div>
 
         <div className="service">
-          <h3>Client Inquiries</h3>
-          <p>Have questions or specific requests? Our client inquiry system ensures smooth communication and efficient assistance.</p>
+          <h3>Client Appointments</h3>
+          <p>Have questions or specific requests? Our appointment scheduling system ensures smooth communication and efficient assistance.</p>
         </div>
       </Services>
 
       <Section>
-        <h2>Why Choose Your Realty Hub?</h2>
+        <h2>Why Choose Red Stick Realty?</h2>
         <ul>
           <li>Extensive Property Database</li>
           <li>Professional and Friendly Agents</li>

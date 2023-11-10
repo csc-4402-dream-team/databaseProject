@@ -6,21 +6,21 @@ const ClientPage = () => {
   const [clientID, setClientID] = useState('');
   const[loggedInClient, setLoggedInClient] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-  const [clientData, setClientData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    street: '',
-    city: '',
-    state: '',
-    zipcode: '',
-  });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setClientData({ ...clientData, [name]: value });
-  };
+  // const [clientData, setClientData] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   email: '',
+  //   phone: '',
+  //   street: '',
+  //   city: '',
+  //   state: '',
+  //   zipcode: '',
+  // });
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setClientData({ ...clientData, [name]: value });
+  // };
 
   const handleIDChange = (e) => {
     setClientID(e.target.value);
@@ -38,31 +38,31 @@ const ClientPage = () => {
     }
   };
   
-  const handleAddClient = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/api/client/addClient', clientData);
-      const success = response.data;
-      console.log(response.data);
-      if (success) {
-        setLoggedIn(true);
-        console.log('Client added successfully');
-      } else {
-        setLoggedIn(false);
-        console.error('Failed to add client');
-      }
-    } catch (error) {
-      console.error('Error adding client:', error);
-    }
-  };
+  // const handleAddClient = async () => {
+  //   try {
+  //     const response = await axios.post('http://localhost:8080/api/client/addClient', clientData);
+  //     const success = response.data;
+  //     console.log(response.data);
+  //     if (success) {
+  //       setLoggedIn(true);
+  //       console.log('Client added successfully');
+  //     } else {
+  //       setLoggedIn(false);
+  //       console.error('Failed to add client');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error adding client:', error);
+  //   }
+  // };
 
   if(!loggedIn){
     return (
       <div style={styles.container}>
         <h2 style={styles.title}>Enter Client ID</h2>
         <input type="text" name="clientID" placeholder="Client ID" style={styles.input} onChange={handleIDChange} />
-        <button style={styles.button} onClick={handleGetClient}>Get Client</button>
+        <button style={styles.button} onClick={handleGetClient}>View Information</button>
         
-        <h2 style={styles.title}>OR</h2>
+        {/* <h2 style={styles.title}>OR</h2>
 
         <h2 style={styles.title}>Add a New Client</h2>
 
@@ -78,7 +78,7 @@ const ClientPage = () => {
             <input type="text" name="zipcode" placeholder="Zipcode" style={styles.input} onChange={handleInputChange} />
           </div>
           <button style={styles.button} onClick={handleAddClient}>Add Client</button>
-        </div>
+        </div> */}
       </div>
     );
   }else{

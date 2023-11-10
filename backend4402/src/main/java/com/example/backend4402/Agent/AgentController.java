@@ -19,15 +19,12 @@ public class AgentController {
     public AgentController(AgentService myService) {
         this.agentService = myService;
     }
-    @PostMapping("/sql")
-    public List<Map<String, Object>> executeSQLStatement(@RequestBody Map<String, String> statement) {
-        return agentService.executeSql(statement.get("sql")); // Call your service method here
-    }
+
     @PostMapping("/getAgent")
-    public List<Map<String, Object>> getAgent(@RequestBody Map<String, String> arguments){
-        String agentID = arguments.get("agentID");
-        //implement
-        return null;
+    public String getAgent(@RequestBody Map<String, String> arguments){
+        Long agentID = Long.parseLong(arguments.get("agentID"));
+        Agent agent = agentService.getAgent(agentID);
+        return agent.toJSON();
     }
 
     @PostMapping("/addProperty")

@@ -37,7 +37,6 @@ public class ClientController {
         Client x = cliService.getClient(Long.parseLong(clientID));
         return x.toJSON();
     }
-
     @PostMapping("/getProperties")
     public List<Map<String, Object>> allProperties(){
         return null;
