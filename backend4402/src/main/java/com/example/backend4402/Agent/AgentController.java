@@ -21,10 +21,10 @@ public class AgentController {
     }
 
     @PostMapping("/getAgent")
-    public String getAgent(@RequestBody Map<String, String> arguments){
+    public Map<String, Object> getAgent(@RequestBody Map<String, String> arguments){
         Long agentID = Long.parseLong(arguments.get("agentID"));
-        Agent agent = agentService.getAgent(agentID);
-        return agent.toJSON();
+        List<Map<String, Object>> agent = agentService.getAgent(agentID);
+        return agent.get(0);
     }
 
     @PostMapping("/addProperty")

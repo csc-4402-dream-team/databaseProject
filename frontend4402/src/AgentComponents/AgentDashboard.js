@@ -2,14 +2,24 @@ import React from 'react';
 
 
 const AgentDashboard = (agent) => {
+
+  const {
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+    PHONE,
+    LICENSE_NUMBER
+  } = agent.agent;
+
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Agent Dashboard</h1>
         <div>
-            <p>Agent Name: {agent.agent.firstName} {agent.agent.lastName}</p>
-            <p>Email: {agent.agent.email}</p>
-            <p>Phone: {agent.agent.phone}</p>
-            <p>License: {agent.agent.licenseNumber}</p>
+            <p>Agent Name: {FIRST_NAME} {LAST_NAME}</p>
+            <p>Email: {EMAIL}</p>
+            <p>Phone: {PHONE}</p>
+            <p>License: {LICENSE_NUMBER}</p>
             
         </div>
       <section style={styles.section}>

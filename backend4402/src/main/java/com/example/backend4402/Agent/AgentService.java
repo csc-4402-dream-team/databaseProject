@@ -17,25 +17,24 @@ public class AgentService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Agent getAgent(long agentId) {
-        String sql = "SELECT * FROM AGENT WHERE agent_id = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{agentId}, (resultSet, i) -> {
-                Agent agent = new Agent();
-                agent.setAgentId(resultSet.getLong("agent_id"));
-                agent.setOfficeId(resultSet.getLong("office_id"));
-                agent.setFirstName(resultSet.getString("first_name"));
-                agent.setLastName(resultSet.getString("last_name"));
-                agent.setEmail(resultSet.getString("email"));
-                agent.setPhone(resultSet.getString("phone"));
-                agent.setLicenseNumber(resultSet.getString("license_number"));
-                agent.setDateHired(resultSet.getDate("date_hired")); // Assuming you use LocalDate in Agent class
-                return agent;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Return null or throw an exception based on your error-handling strategy
+    public List<Map<String, Object>> executeSql(String sqlStatement) {
+        List<Map<String, Object>> result = Collections.emptyList();
+        try{
+            result = jdbcTemplate.queryForList(sqlStatement); // For DML (SELECT) statements
+            return result;
+        }catch(Exception e){
+            try{
+                jdbcTemplate.execute(sqlStatement); // Execute DDL statement
+            }catch(Exception x){
+                e.printStackTrace();
+            }
+            return result;
         }
+    }
+
+    public List<Map<String, Object>> getAgent(long agentId) {
+        String sql = "SELECT * FROM AGENT WHERE agent_id = " + agentId;
+        return executeSql(sql);
     }
 
 }
