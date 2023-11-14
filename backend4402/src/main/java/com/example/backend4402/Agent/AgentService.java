@@ -71,4 +71,9 @@ public class AgentService {
         return executeSql(sql);
     }
 
+    public List<Map<String, Object>> getAgent(long agentId) {
+        String sql = "SELECT * FROM AGENT WHERE agent_id = " + agentId;
+        return executeSql(sql);
+    }
+
 }

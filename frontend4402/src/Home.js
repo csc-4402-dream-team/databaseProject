@@ -9,6 +9,7 @@ const HomeContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  margin-bottom: 100px;
 `;
 
 const Header = styled.header`
@@ -115,15 +116,6 @@ const HomePage = () => {
         </div>
       </Services>
 
-      <Section>
-        <h2>Why Choose Red Stick Realty?</h2>
-        <ul>
-          <li>Extensive Property Database</li>
-          <li>Professional and Friendly Agents</li>
-          <li>Efficient Client Communication</li>
-          <li>Easy-to-Use Interface</li>
-        </ul>
-      </Section>
     </HomeContainer>
   );
 };

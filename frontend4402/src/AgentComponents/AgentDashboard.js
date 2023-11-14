@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const AgentDashboard = (agent) => {
+
+  const {
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+    PHONE,
+    LICENSE_NUMBER
+  } = agent.agent;
+
+
 <<<<<<< HEAD
   const [formData, setFormData] = useState({
     agentID: "",
@@ -69,21 +79,11 @@ const AgentDashboard = (agent) => {
     <div style={styles.container}>
       <button style={styles.button}>View Properties</button>
       <h1 style={styles.title}>Agent Dashboard</h1>
-<<<<<<< HEAD
-      <div>
-        <p>
-          Agent Name: {agent.agent.firstName} {agent.agent.lastName}
-        </p>
-        <p>Email: {agent.agent.email}</p>
-        <p>Phone: {agent.agent.phone}</p>
-        <p>License: {agent.agent.licenseNumber}</p>
-      </div>
-=======
         <div>
-            <p>Agent Name: {FIRST_NAME} {LAST_NAME}</p>
-            <p>Email: {EMAIL}</p>
-            <p>Phone: {PHONE}</p>
-            <p>License: {LICENSE_NUMBER}</p>
+            <p>Agent Name: {agent.agent.firstName} {agent.agent.lastName}</p>
+            <p>Email: {agent.agent.email}</p>
+            <p>Phone: {agent.agent.phone}</p>
+            <p>License: {agent.agent.licenseNumber}</p>
             
         </div>
 >>>>>>> 5eebce320a4a5f9da3a2912a3b0d338bd3ea1e42
