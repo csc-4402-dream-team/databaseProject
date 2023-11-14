@@ -19,6 +19,7 @@ public class AgentService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+<<<<<<< HEAD
     public boolean addProperty(String sql) {
         try {
             jdbcTemplate.execute(sql);
@@ -48,7 +49,26 @@ public class AgentService {
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Return null or throw an exception based on your error-handling strategy
+=======
+    public List<Map<String, Object>> executeSql(String sqlStatement) {
+        List<Map<String, Object>> result = Collections.emptyList();
+        try{
+            result = jdbcTemplate.queryForList(sqlStatement); // For DML (SELECT) statements
+            return result;
+        }catch(Exception e){
+            try{
+                jdbcTemplate.execute(sqlStatement); // Execute DDL statement
+            }catch(Exception x){
+                e.printStackTrace();
+            }
+            return result;
+>>>>>>> 5eebce320a4a5f9da3a2912a3b0d338bd3ea1e42
         }
+    }
+
+    public List<Map<String, Object>> getAgent(long agentId) {
+        String sql = "SELECT * FROM AGENT WHERE agent_id = " + agentId;
+        return executeSql(sql);
     }
 
 }

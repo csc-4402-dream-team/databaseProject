@@ -1,9 +1,6 @@
 package com.example.backend4402.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -17,34 +14,40 @@ public class ClientController {
         this.cliService = myService;
     }
 
-    @PostMapping("/addClient")
-    public boolean addClient(@RequestBody Map<String, String> arguments){
-        String firstName = arguments.get("firstName");
-        String lastName = arguments.get("lastName");
-        String email = arguments.get("email");
-        String phone = arguments.get("phone");
-        String street = arguments.get("city");
-        String city = arguments.get("city");
-        String state = arguments.get("state");
-        String zipcode = arguments.get("zipcode");
-        Client newClient = new Client(firstName, lastName, email, phone, street, city, state, zipcode);
-        return cliService.addClient(newClient);
-    }
+//    @PostMapping("/addClient")
+//    public boolean addClient(@RequestBody Map<String, String> arguments){
+//        String firstName = arguments.get("firstName");
+//        String lastName = arguments.get("lastName");
+//        String email = arguments.get("email");
+//        String phone = arguments.get("phone");
+//        String street = arguments.get("city");
+//        String city = arguments.get("city");
+//        String state = arguments.get("state");
+//        String zipcode = arguments.get("zipcode");
+//        Client newClient = new Client(firstName, lastName, email, phone, street, city, state, zipcode);
+//        return cliService.addClient(newClient);
+//    }
 
     @PostMapping("/getClient")
-    public String getClient(@RequestBody Map<String, String> arguments){
+    public Map<String, Object> getClient(@RequestBody Map<String, String> arguments){
         String clientID = arguments.get("clientID");
-        Client x = cliService.getClient(Long.parseLong(clientID));
-        return x.toJSON();
+        List<Map<String, Object>> x = cliService.getClient(Long.parseLong(clientID));
+        return x.get(0);
     }
+
     @PostMapping("/getProperties")
-    public List<Map<String, Object>> allProperties(){
-        return null;
+    public List<Map<String, Object>> getProperties(){
+        String sql = "SELECT * FROM PROPERTY";
+        return cliService.executeSql(sql); // Call your service method here
     }
+
     @PostMapping("/getImage")
-    public List<Map<String, Object>> getImage(@RequestBody Map<String, String> arguments){
-        return null;
+    public Map<String, Object> getImage(@RequestBody Map<String, String> arguments){
+        String sql = "SELECT * FROM IMAGE WHERE PROPERTY_ID = " + arguments.get("propertyID");
+        List<Map<String, Object>> result =  cliService.executeSql(sql);
+        return result.get(0);
     }
+
     @PostMapping("/addAppointment")
     public List<Map<String, Object>> addAppointment(@RequestBody Map<String, String> arguments){
         return null;

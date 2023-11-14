@@ -1,14 +1,26 @@
 import React from 'react';
 
 const ClientDashboard = (client) => {
+  const {
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+    PHONE,
+    STREET,
+    CITY,
+    STATE,
+    ZIPCODE,
+  } = client.client;
+
   return (
     <div style={styles.container}>
+      
       <h1 style={styles.title}>Client Dashboard</h1>
         <div>
-            <p>Client Name: {client.client.firstName} {client.client.lastName}</p>
-            <p>Email: {client.client.email}</p>
-            <p>Phone: {client.client.phone}</p>
-            <p>License: {client.client.licenseNumber}</p>
+            <p>Client Name: {FIRST_NAME} {LAST_NAME}</p>
+            <p>Email: {EMAIL}</p>
+            <p>Phone: {PHONE}</p>
+            <p>Address: {STREET}, {STATE} {ZIPCODE}</p>
         </div>
       <section style={styles.section}>
         <h2>View all properties & Images</h2>

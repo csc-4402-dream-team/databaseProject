@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropertyList from './PropertyList';
 
 const AccentColor = '#AC3931';
 const Black = '#000000';
@@ -85,37 +86,17 @@ const Services = styled.div`
   }
 `;
 
-const ContactSection = styled(Section)`
-  text-align: center;
-
-  button {
-    background-color: ${AccentColor};
-    color: white;
-    font-size: 1.2em;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: darken(${AccentColor}, 10%);
-    }
-  }
-`;
-
 const HomePage = () => {
   return (
     <HomeContainer>
       <Header>
         <h1>Red Stick Realty</h1>
-        <p></p>
-      </Header>
-
-      <Section>
-        <h2>Welcome to Your Realty Hub</h2>
         <p>Discover your dream home with our comprehensive real estate agency database. We provide a seamless experience to manage and explore properties, connect with agents, and turn your housing dreams into reality.</p>
+      </Header>
+      <Section>
+        <PropertyList></PropertyList>
       </Section>
+
 
       <Services>
         <div className="service">
@@ -143,12 +124,6 @@ const HomePage = () => {
           <li>Easy-to-Use Interface</li>
         </ul>
       </Section>
-
-      <ContactSection>
-        <h2>Contact Us</h2>
-        <p>Ready to find your dream home? Contact us today for personalized assistance and expert guidance.</p>
-        <button>Contact Us</button>
-      </ContactSection>
     </HomeContainer>
   );
 };
