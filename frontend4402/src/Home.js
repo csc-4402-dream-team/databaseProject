@@ -102,12 +102,12 @@ const HomePage = () => {
       <Services>
         <div className="service">
           <h3>Browse Properties</h3>
-          <p>Browse through a wide range of residential and commercial properties. Find the perfect match for your lifestyle and business needs.</p>
+          <p>Browse through a wide range of residential homes, apartments, and more! Find the perfect match for your lifestyle and family needs.</p>
         </div>
 
         <div className="service">
           <h3>Expert Agents</h3>
-          <p>Connect with experienced real estate agents who understand your requirements and guide you through the buying or selling process.</p>
+          <p>Connect with real estate agents who understand your requirements and will guide you through the buying or selling process.</p>
         </div>
 
         <div className="service">
