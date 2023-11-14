@@ -17,6 +17,17 @@ public class AgentService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public boolean addProperty(String sql) {
+        try {
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e);
+            return false;
+        }
+    }
+
     public List<Map<String, Object>> executeSql(String sqlStatement) {
         List<Map<String, Object>> result = Collections.emptyList();
         try{
@@ -31,7 +42,6 @@ public class AgentService {
             return result;
         }
     }
-
     public List<Map<String, Object>> getAgent(long agentId) {
         String sql = "SELECT * FROM AGENT WHERE agent_id = " + agentId;
         return executeSql(sql);
