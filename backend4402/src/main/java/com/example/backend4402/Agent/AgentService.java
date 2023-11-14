@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.example.backend4402.DatabaseService;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +19,21 @@ public class AgentService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public boolean addProperty(String sql) {
+        try {
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e);
+            return false;
+        }
+    }
+
     public Agent getAgent(long agentId) {
         String sql = "SELECT * FROM AGENT WHERE agent_id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{agentId}, (resultSet, i) -> {
+            return jdbcTemplate.queryForObject(sql, new Object[] { agentId }, (resultSet, i) -> {
                 Agent agent = new Agent();
                 agent.setAgentId(resultSet.getLong("agent_id"));
                 agent.setOfficeId(resultSet.getLong("office_id"));
