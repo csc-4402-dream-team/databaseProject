@@ -3,16 +3,8 @@ import axios from "axios";
 
 const AgentDashboard = (agent) => {
 
-  const {
-    FIRST_NAME,
-    LAST_NAME,
-    EMAIL,
-    PHONE,
-    LICENSE_NUMBER
-  } = agent.agent;
+  
 
-
-<<<<<<< HEAD
   const [formData, setFormData] = useState({
     agentID: "",
     propertyType: "",
@@ -63,7 +55,6 @@ const AgentDashboard = (agent) => {
       [name]: value,
     });
   };
-=======
 
   const {
     FIRST_NAME,
@@ -73,7 +64,6 @@ const AgentDashboard = (agent) => {
     LICENSE_NUMBER
   } = agent.agent;
 
->>>>>>> 5eebce320a4a5f9da3a2912a3b0d338bd3ea1e42
 
   return (
     <div style={styles.container}>
@@ -86,7 +76,6 @@ const AgentDashboard = (agent) => {
             <p>License: {agent.agent.licenseNumber}</p>
             
         </div>
->>>>>>> 5eebce320a4a5f9da3a2912a3b0d338bd3ea1e42
       <section style={styles.section}>
         <h2>List a Property</h2>
         {/* Add content for listing property and uploading Images */}
