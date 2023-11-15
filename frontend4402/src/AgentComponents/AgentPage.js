@@ -45,7 +45,7 @@ const AgentPage = () => {
   } else {
     return (
       <>
-        <AgentDashboard agent={loggedInAgent}></AgentDashboard>
+      <AgentDashboard agent={loggedInAgent}></AgentDashboard>
       </>
     );
   }

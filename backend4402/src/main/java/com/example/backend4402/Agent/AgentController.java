@@ -1,5 +1,6 @@
 package com.example.backend4402.Agent;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,11 +26,13 @@ public class AgentController {
     public Map<String, Object> getAgent(@RequestBody Map<String, String> arguments){
         Long agentID = Long.parseLong(arguments.get("agentID"));
         List<Map<String, Object>> agent = agentService.getAgent(agentID);
-        return agent.get(0);
+        Map<String, Object> agentobj = agent.get(0);
+        agentobj.put("agentID", agentID);
+        return agentobj;
     }
 
     @PostMapping("/addProperty")
-    public boolean addProperty(@RequestBody Map<String, String> arguments) {
+    public int addProperty(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
         String propertyType = arguments.get("propertyType");
         String street = arguments.get("street");
@@ -51,20 +54,21 @@ public class AgentController {
                 + numBaths + "," + squareFootage + ",'" + description + "','" + date + "','" + status + "');";
 
         try {
-            agentService.addProperty(sql2);
-            return true;
+            int propertyID = agentService.addProperty(sql2);
+            // String image = arguments.get("image");
+            return propertyID;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
     @PostMapping("/addImage")
     public List<Map<String, Object>> addImage(@RequestBody Map<String, String> arguments) {
         String propertyID = arguments.get("propertyID");
-        String imageData = arguments.get("imageData");
-        // implement
-        return null;
+        String imageData = arguments.get("image");
+        String sql = "INSERT INTO IMAGE(PROPERTY_ID, IMAGE_DATA) VALUES (" + propertyID + ", '" + imageData + "');";
+        return agentService.executeSql(sql);
     }
 
     @PostMapping("/getProperties")

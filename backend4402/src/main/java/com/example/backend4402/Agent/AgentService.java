@@ -2,8 +2,12 @@ package com.example.backend4402.Agent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,15 +21,20 @@ public class AgentService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public boolean addProperty(String sql) {
-        try {
-            jdbcTemplate.execute(sql);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e);
-            return false;
+    public int addProperty(String sql) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    return ps;},
+                keyHolder
+        );
+        if (keyHolder.getKey() != null) {
+            // Access generated keys
+            Number generatedId = keyHolder.getKey();
+            return generatedId.intValue();
         }
+        return -1;
     }
 
     public List<Map<String, Object>> executeSql(String sqlStatement) {

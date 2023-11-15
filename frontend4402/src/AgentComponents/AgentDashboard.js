@@ -3,10 +3,17 @@ import axios from "axios";
 
 const AgentDashboard = (agent) => {
 
-  
+  const {
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+    PHONE,
+    LICENSE_NUMBER,
+    AGENT_ID
+  } = agent.agent;
 
   const [formData, setFormData] = useState({
-    agentID: "",
+    agentID: AGENT_ID,
     propertyType: "",
     street: "",
     city: "",
@@ -18,9 +25,10 @@ const AgentDashboard = (agent) => {
     squareFootage: "",
     description: "",
     propertyStatus: "",
+    image: "",
   });
 
-  const handleAddAgent = async (event) => {
+  const handleAddProperty = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
@@ -40,9 +48,19 @@ const AgentDashboard = (agent) => {
           propertyStatus: formData.propertyStatus,
         }
       );
-      setFormData(response.data);
+      // setFormData(response.data);
+      console.log(formData);
       console.log("success");
+      const propertyID = response.data;
       console.log(response.data);
+
+      if(propertyID != -1){
+         const imageResponse = await axios.post("http://localhost:8080/api/agent/addImage",
+         {image : formData.image,
+          propertyID : propertyID});
+          
+         console.log(imageResponse.data);
+      }
     } catch (error) {
       console.error("Error adding a property", error.response);
     }
@@ -56,43 +74,25 @@ const AgentDashboard = (agent) => {
     });
   };
 
-  const {
-    FIRST_NAME,
-    LAST_NAME,
-    EMAIL,
-    PHONE,
-    LICENSE_NUMBER
-  } = agent.agent;
-
-
   return (
     <div style={styles.container}>
       <button style={styles.button}>View Properties</button>
       <h1 style={styles.title}>Agent Dashboard</h1>
         <div>
-            <p>Agent Name: {agent.agent.firstName} {agent.agent.lastName}</p>
-            <p>Email: {agent.agent.email}</p>
-            <p>Phone: {agent.agent.phone}</p>
-            <p>License: {agent.agent.licenseNumber}</p>
-            
+            <p>Agent ID: {AGENT_ID}</p>
+            <p>Agent Name: {FIRST_NAME} {LAST_NAME}</p>
+            <p>Email: {EMAIL}</p>
+            <p>Phone: {PHONE}</p>
+            <p>License: {LICENSE_NUMBER}</p>
         </div>
       <section style={styles.section}>
         <h2>List a Property</h2>
         {/* Add content for listing property and uploading Images */}
-        <form onSubmit={handleAddAgent} style={styles.inputContainer}>
-          <label style={styles.input}>
-            Agent ID:
-            <input
-              type="text"
-              name="agentID"
-              value={formData.agentID}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label>
+        <form onSubmit={handleAddProperty} style={styles.inputContainer}>
+       
+          <label style={styles.label}>
             Property Type:
-            <input
+            <input style={styles.input}
               type="text"
               name="propertyType"
               value={formData.propertyType}
@@ -100,49 +100,54 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <label>
-            Street:
-            <input
-              type="text"
-              name="street"
-              value={formData.street}
-              onChange={handleChange}
-            />
-          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop:'15px' }} >
+    <label style={styles.label}>
+      Street:
+      <input
+        style={styles.input2}
+        type="text"
+        name="street"
+        value={formData.street}
+        onChange={handleChange}
+      />
+    </label>
 
-          <label>
-            City:
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-            />
-          </label>
+    <label style={styles.label}>
+      City:
+      <input
+        style={styles.input2}
+        type="text"
+        name="city"
+        value={formData.city}
+        onChange={handleChange}
+      />
+    </label>
 
-          <label>
-            State:
-            <input
-              type="text"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-            />
-          </label>
+    <label style={styles.label}>
+      State:
+      <input
+        style={styles.input2}
+        type="text"
+        name="state"
+        value={formData.state}
+        onChange={handleChange}
+      />
+    </label>
 
-          <label>
-            Zipcode:
-            <input
-              type="text"
-              name="zipcode"
-              value={formData.zipcode}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label>
+    <label style={styles.label}>
+      Zipcode:
+      <input
+        style={styles.input2}
+        type="text"
+        name="zipcode"
+        value={formData.zipcode}
+        onChange={handleChange}
+      />
+    </label>
+  </div >
+          <label style={styles.label}>
             List Price:
-            <input
+            <input style={styles.input}
               type="text"
               name="listPrice"
               value={formData.listPrice}
@@ -150,9 +155,9 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <label>
+          <label style={styles.label}>
             Number of Beds:
-            <input
+            <input style={styles.input}
               type="text"
               name="numBeds"
               value={formData.numBeds}
@@ -160,9 +165,9 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <label>
+          <label style={styles.label}>
             Number of Baths:
-            <input
+            <input style={styles.input}
               type="text"
               name="numBaths"
               value={formData.numBaths}
@@ -170,9 +175,9 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <label>
+          <label style={styles.label}>
             Square Footage:
-            <input
+            <input style={styles.input}
               type="text"
               name="squareFootage"
               value={formData.squareFootage}
@@ -180,18 +185,18 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <label>
+          <label style={styles.label}>
             Description:
-            <textarea
+            <textarea style={styles.input}
               name="description"
               value={formData.description}
               onChange={handleChange}
             />
           </label>
 
-          <label>
+          <label style={styles.label}>
             Status:
-            <input
+            <input style={styles.input}
               type="text"
               name="propertyStatus"
               value={formData.propertyStatus}
@@ -199,7 +204,17 @@ const AgentDashboard = (agent) => {
             />
           </label>
 
-          <button type="submit">Submit</button>
+          <label style={styles.label}>
+            URL to Image:
+            <input style={styles.input}
+              type="text"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+            />
+          </label>
+
+          <button style = {styles.button} type="submit">Submit</button>
         </form>
       </section>
 
@@ -257,7 +272,15 @@ const styles = {
   input: {
     width: "100%",
     padding: "10px",
-    marginBottom: "10px",
+    fontSize: "16px",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+  },
+  input2:{
+    width:"80%",
+    padding: "10px",
+    marginLeft:"20px",
+    marginRight:"20px",
     fontSize: "16px",
     border: "1px solid #ccc",
     borderRadius: "5px",
@@ -271,6 +294,17 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+  },
+  label: {
+    marginBottom: '8px',
+  },
+  textarea: {
+    padding: '8px',
+    marginBottom: '16px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    fontSize: '14px',
+    resize: 'vertical',
   },
 };
 
