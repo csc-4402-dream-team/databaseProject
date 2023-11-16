@@ -32,20 +32,15 @@ public class ClientController {
     public Map<String, Object> getClient(@RequestBody Map<String, String> arguments){
         String clientID = arguments.get("clientID");
         List<Map<String, Object>> x = cliService.getClient(Long.parseLong(clientID));
-        return x.get(0);
+        Map<String, Object> clientObj = x.get(0);
+        clientObj.put("clientID", clientID);
+        return clientObj;
     }
 
     @PostMapping("/getProperties")
     public List<Map<String, Object>> getProperties(){
         String sql = "SELECT * FROM PROPERTY";
         return cliService.executeSql(sql); // Call your service method here
-    }
-
-    @PostMapping("/getImage")
-    public Map<String, Object> getImage(@RequestBody Map<String, String> arguments){
-        String sql = "SELECT * FROM IMAGE WHERE PROPERTY_ID = " + arguments.get("propertyID");
-        List<Map<String, Object>> result =  cliService.executeSql(sql);
-        return result.get(0);
     }
 
     @PostMapping("/addAppointment")

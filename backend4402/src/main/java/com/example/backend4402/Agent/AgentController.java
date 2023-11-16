@@ -46,29 +46,21 @@ public class AgentController {
         String description = arguments.get("description");
         String date = LocalDate.now().toString();
         String status = arguments.get("propertyStatus");
+        String image = arguments.get("image");
 
-        String sql2 = "INSERT INTO PROPERTY (AGENT_ID, PROPERTY_TYPE, STREET, CITY, STATE, ZIPCODE, LIST_PRICE, NUM_BEDROOMS, NUM_BATHROOMS, SQUARE_FOOTAGE, DESCRIPTION, LISTING_DATE, STATUS) VALUES ("
+        String sql2 = "INSERT INTO PROPERTY (AGENT_ID, PROPERTY_TYPE, STREET, CITY, STATE, ZIPCODE, LIST_PRICE, NUM_BEDROOMS, NUM_BATHROOMS, SQUARE_FOOTAGE, DESCRIPTION, LISTING_DATE, STATUS, IMAGE_URL) VALUES ("
                 + agentID + ",'" + propertyType + "','" + street + "','" + city + "','"
                 + state
                 + "'," + zipcode + "," + listPrice + "," + numBeds + ","
-                + numBaths + "," + squareFootage + ",'" + description + "','" + date + "','" + status + "');";
+                + numBaths + "," + squareFootage + ",'" + description + "','" + date + "','" + status + "','" + image + "');";
 
         try {
             int propertyID = agentService.addProperty(sql2);
-            // String image = arguments.get("image");
             return propertyID;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
-    }
-
-    @PostMapping("/addImage")
-    public List<Map<String, Object>> addImage(@RequestBody Map<String, String> arguments) {
-        String propertyID = arguments.get("propertyID");
-        String imageData = arguments.get("image");
-        String sql = "INSERT INTO IMAGE(PROPERTY_ID, IMAGE_DATA) VALUES (" + propertyID + ", '" + imageData + "');";
-        return agentService.executeSql(sql);
     }
 
     @PostMapping("/getProperties")

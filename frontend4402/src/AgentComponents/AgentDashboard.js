@@ -3,6 +3,8 @@ import axios from "axios";
 
 const AgentDashboard = (agent) => {
 
+  const [propStatus, setPropStatus] = useState("");
+
   const {
     FIRST_NAME,
     LAST_NAME,
@@ -36,6 +38,26 @@ const AgentDashboard = (agent) => {
     dateSent: null,
   });
 
+
+  function clearPropForm(){
+    setPropStatus("");
+    setPropertyFormData({
+      agentID: AGENT_ID,
+      propertyType: "",
+      street: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      listPrice: "",
+      numBeds: "",
+      numBaths: "",
+      squareFootage: "",
+      description: "",
+      propertyStatus: "",
+      image: "",
+    });
+  }
+
   const handleAddProperty = async (event) => {
     event.preventDefault();
     try {
@@ -54,24 +76,21 @@ const AgentDashboard = (agent) => {
           squareFootage: propertyFormData.squareFootage,
           description: propertyFormData.description,
           propertyStatus: propertyFormData.propertyStatus,
+          image: propertyFormData.image
         }
       );
       // setFormData(response.data);
       console.log(propertyFormData);
-      console.log("success");
       const propertyID = response.data;
       console.log(response.data);
-
-      if (propertyID != -1) {
-        const imageResponse = await axios.post("http://localhost:8080/api/agent/addImage",
-          {
-            image: propertyFormData.image,
-            propertyID: propertyID
-          });
-
-        console.log(imageResponse.data);
+      if(propertyID != -1){
+         setPropStatus("Successfully uploaded property!");
+      }else{
+        setPropStatus("Failed to upload property.");
       }
+      setTimeout(clearPropForm, 3000);
     } catch (error) {
+      setPropStatus("Error uploading property: " + error.response);
       console.error("Error adding a property", error.response);
     }
   };
@@ -89,7 +108,6 @@ const AgentDashboard = (agent) => {
 
   return (
     <div style={styles.container}>
-      <button style={styles.button}>View Properties</button>
       <h1 style={styles.title}>Agent Dashboard</h1>
       <div>
         <p>Agent ID: {AGENT_ID}</p>
@@ -112,7 +130,6 @@ const AgentDashboard = (agent) => {
               onChange={handleChange}
             />
           </label>
-
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }} >
             <label style={styles.label}>
               Street:
@@ -229,6 +246,7 @@ const AgentDashboard = (agent) => {
 
           <button style={styles.button} type="submit">Submit</button>
         </form>
+        <p>{propStatus}</p>
       </section>
 
       <section style={styles.section}>

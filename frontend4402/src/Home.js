@@ -95,9 +95,9 @@ const HomePage = () => {
         <p>Discover your dream home with our comprehensive real estate agency database. We provide a seamless experience to manage and explore properties, connect with agents, and turn your housing dreams into reality.</p>
       </Header>
       <Section>
+        <h1 style={{ textAlign: 'center', marginBottom: '30px', color:'#AC3931'}}>Tons of Properties!</h1>
         <PropertyList></PropertyList>
       </Section>
-
 
       <Services>
         <div className="service">
