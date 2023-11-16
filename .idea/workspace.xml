@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8f4f29f-39aa-4463-af08-9fa3180db587" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend4402/src/AgentComponents/AgentDashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend4402/src/AgentComponents/AgentDashboard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +31,7 @@
     "WebServerToolWindowFactoryState": "false",
     "com.google.cloudcode.ide_session_index": "20231107_0001",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/adityasrivastava/Documents/CSC4402_Group_project/databaseProject",
+    "last_opened_file_path": "C:/Users/Calfr/Documents/databaseProject/backend4402",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

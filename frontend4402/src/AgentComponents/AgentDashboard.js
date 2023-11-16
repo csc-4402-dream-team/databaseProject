@@ -12,7 +12,7 @@ const AgentDashboard = (agent) => {
     AGENT_ID
   } = agent.agent;
 
-  const [formData, setFormData] = useState({
+  const [propertyFormData, setPropertyFormData] = useState({
     agentID: AGENT_ID,
     propertyType: "",
     street: "",
@@ -28,48 +28,61 @@ const AgentDashboard = (agent) => {
     image: "",
   });
 
+  const [transactionFormData, setTransactionFormData] = useState({
+    agentID: AGENT_ID,
+    clientID: "",
+    propertyID: "",
+    amount: "",
+    dateSent: null,
+  });
+
   const handleAddProperty = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8080/api/agent/addProperty",
         {
-          agentID: formData.agentID,
-          propertyType: formData.propertyType,
-          street: formData.street,
-          city: formData.city,
-          state: formData.state,
-          zipcode: formData.zipcode,
-          listPrice: formData.listPrice,
-          numBeds: formData.numBeds,
-          numBaths: formData.numBaths,
-          squareFootage: formData.squareFootage,
-          description: formData.description,
-          propertyStatus: formData.propertyStatus,
+          agentID: propertyFormData.agentID,
+          propertyType: propertyFormData.propertyType,
+          street: propertyFormData.street,
+          city: propertyFormData.city,
+          state: propertyFormData.state,
+          zipcode: propertyFormData.zipcode,
+          listPrice: propertyFormData.listPrice,
+          numBeds: propertyFormData.numBeds,
+          numBaths: propertyFormData.numBaths,
+          squareFootage: propertyFormData.squareFootage,
+          description: propertyFormData.description,
+          propertyStatus: propertyFormData.propertyStatus,
         }
       );
       // setFormData(response.data);
-      console.log(formData);
+      console.log(propertyFormData);
       console.log("success");
       const propertyID = response.data;
       console.log(response.data);
 
-      if(propertyID != -1){
-         const imageResponse = await axios.post("http://localhost:8080/api/agent/addImage",
-         {image : formData.image,
-          propertyID : propertyID});
-          
-         console.log(imageResponse.data);
+      if (propertyID != -1) {
+        const imageResponse = await axios.post("http://localhost:8080/api/agent/addImage",
+          {
+            image: propertyFormData.image,
+            propertyID: propertyID
+          });
+
+        console.log(imageResponse.data);
       }
     } catch (error) {
       console.error("Error adding a property", error.response);
     }
   };
 
+  // Needs to be implemented similar to above
+  const handleCreateTransaction =  async () => {};
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setPropertyFormData({
+      ...propertyFormData,
       [name]: value,
     });
   };
@@ -78,79 +91,79 @@ const AgentDashboard = (agent) => {
     <div style={styles.container}>
       <button style={styles.button}>View Properties</button>
       <h1 style={styles.title}>Agent Dashboard</h1>
-        <div>
-            <p>Agent ID: {AGENT_ID}</p>
-            <p>Agent Name: {FIRST_NAME} {LAST_NAME}</p>
-            <p>Email: {EMAIL}</p>
-            <p>Phone: {PHONE}</p>
-            <p>License: {LICENSE_NUMBER}</p>
-        </div>
+      <div>
+        <p>Agent ID: {AGENT_ID}</p>
+        <p>Agent Name: {FIRST_NAME} {LAST_NAME}</p>
+        <p>Email: {EMAIL}</p>
+        <p>Phone: {PHONE}</p>
+        <p>License: {LICENSE_NUMBER}</p>
+      </div>
       <section style={styles.section}>
         <h2>List a Property</h2>
         {/* Add content for listing property and uploading Images */}
         <form onSubmit={handleAddProperty} style={styles.inputContainer}>
-       
+
           <label style={styles.label}>
             Property Type:
             <input style={styles.input}
               type="text"
               name="propertyType"
-              value={formData.propertyType}
+              value={propertyFormData.propertyType}
               onChange={handleChange}
             />
           </label>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop:'15px' }} >
-    <label style={styles.label}>
-      Street:
-      <input
-        style={styles.input2}
-        type="text"
-        name="street"
-        value={formData.street}
-        onChange={handleChange}
-      />
-    </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '15px' }} >
+            <label style={styles.label}>
+              Street:
+              <input
+                style={styles.input2}
+                type="text"
+                name="street"
+                value={propertyFormData.street}
+                onChange={handleChange}
+              />
+            </label>
 
-    <label style={styles.label}>
-      City:
-      <input
-        style={styles.input2}
-        type="text"
-        name="city"
-        value={formData.city}
-        onChange={handleChange}
-      />
-    </label>
+            <label style={styles.label}>
+              City:
+              <input
+                style={styles.input2}
+                type="text"
+                name="city"
+                value={propertyFormData.city}
+                onChange={handleChange}
+              />
+            </label>
 
-    <label style={styles.label}>
-      State:
-      <input
-        style={styles.input2}
-        type="text"
-        name="state"
-        value={formData.state}
-        onChange={handleChange}
-      />
-    </label>
+            <label style={styles.label}>
+              State:
+              <input
+                style={styles.input2}
+                type="text"
+                name="state"
+                value={propertyFormData.state}
+                onChange={handleChange}
+              />
+            </label>
 
-    <label style={styles.label}>
-      Zipcode:
-      <input
-        style={styles.input2}
-        type="text"
-        name="zipcode"
-        value={formData.zipcode}
-        onChange={handleChange}
-      />
-    </label>
-  </div >
+            <label style={styles.label}>
+              Zipcode:
+              <input
+                style={styles.input2}
+                type="text"
+                name="zipcode"
+                value={propertyFormData.zipcode}
+                onChange={handleChange}
+              />
+            </label>
+          </div >
           <label style={styles.label}>
             List Price:
             <input style={styles.input}
               type="text"
               name="listPrice"
-              value={formData.listPrice}
+              value={propertyFormData.listPrice}
               onChange={handleChange}
             />
           </label>
@@ -160,7 +173,7 @@ const AgentDashboard = (agent) => {
             <input style={styles.input}
               type="text"
               name="numBeds"
-              value={formData.numBeds}
+              value={propertyFormData.numBeds}
               onChange={handleChange}
             />
           </label>
@@ -170,7 +183,7 @@ const AgentDashboard = (agent) => {
             <input style={styles.input}
               type="text"
               name="numBaths"
-              value={formData.numBaths}
+              value={propertyFormData.numBaths}
               onChange={handleChange}
             />
           </label>
@@ -180,7 +193,7 @@ const AgentDashboard = (agent) => {
             <input style={styles.input}
               type="text"
               name="squareFootage"
-              value={formData.squareFootage}
+              value={propertyFormData.squareFootage}
               onChange={handleChange}
             />
           </label>
@@ -189,7 +202,7 @@ const AgentDashboard = (agent) => {
             Description:
             <textarea style={styles.input}
               name="description"
-              value={formData.description}
+              value={propertyFormData.description}
               onChange={handleChange}
             />
           </label>
@@ -199,7 +212,7 @@ const AgentDashboard = (agent) => {
             <input style={styles.input}
               type="text"
               name="propertyStatus"
-              value={formData.propertyStatus}
+              value={propertyFormData.propertyStatus}
               onChange={handleChange}
             />
           </label>
@@ -209,12 +222,12 @@ const AgentDashboard = (agent) => {
             <input style={styles.input}
               type="text"
               name="image"
-              value={formData.image}
+              value={propertyFormData.image}
               onChange={handleChange}
             />
           </label>
 
-          <button style = {styles.button} type="submit">Submit</button>
+          <button style={styles.button} type="submit">Submit</button>
         </form>
       </section>
 
@@ -235,7 +248,50 @@ const AgentDashboard = (agent) => {
 
       <section style={styles.section}>
         <h2>Create Transaction</h2>
-        {/* Add content for creating transactions */}
+        <form onSubmit={handleCreateTransaction} style={styles.inputContainer}>
+
+          <label style={styles.label}>
+            Client ID:
+            <input style={styles.input}
+              type="text"
+              name="propertyType"
+              value={transactionFormData.clientID}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label style={styles.label}>
+            Property ID:
+            <input style={styles.input}
+              type="text"
+              name="propertyType"
+              value={transactionFormData.propertyID}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label style={styles.label}>
+            Amount:
+            <input style={styles.input}
+              type="text"
+              name="listPrice"
+              value={transactionFormData.amount}
+              onChange={handleChange}
+            />
+          </label>
+
+
+          <label style={styles.label}>
+            Transaction Type:
+            <textarea style={styles.input}
+              name="description"
+              value={transactionFormData.type}
+              onChange={handleChange}
+            />
+          </label>
+
+          <button style={styles.button} type="submit">Submit</button>
+        </form>
       </section>
 
       <section style={styles.section}>
@@ -276,11 +332,11 @@ const styles = {
     border: "1px solid #ccc",
     borderRadius: "5px",
   },
-  input2:{
-    width:"80%",
+  input2: {
+    width: "80%",
     padding: "10px",
-    marginLeft:"20px",
-    marginRight:"20px",
+    marginLeft: "20px",
+    marginRight: "20px",
     fontSize: "16px",
     border: "1px solid #ccc",
     borderRadius: "5px",
