@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { isEmptyObject } from "jquery";
 
 const AgentDashboard = (agent) => {
   const [propStatus, setPropStatus] = useState("");
@@ -106,23 +107,27 @@ const AgentDashboard = (agent) => {
         }
       );
       // console.log(response.data); // Log the response to the console
-      setProperties(response.data);
-      console.log(response.data);
 
-      const propertiesList = document.getElementById("propertiesList");
-      propertiesList.innerHTML = "";
-      Object.keys(response.data).forEach((res) => {
-        const propertyType = response.data[res]["PROPERTY_TYPE"];
-        const propertyStreet = response.data[res]["STREET"];
-        const propertyCity = response.data[res]["CITY"];
-        const propertyState = response.data[res]["STATE"];
-        const propertyZip = response.data[res]["ZIPCODE"];
+      const propertiesResponse = response.data;
+      if (propertiesResponse != -1) {
+        console.log(response.data);
 
-        const listItem = document.createElement("li");
-        listItem.textContent = `${propertyType}: ${propertyStreet}, ${propertyCity}, ${propertyState}, ${propertyZip}`;
-        propertiesList.appendChild(listItem);
-      });
-      return response;
+        const propertiesList = document.getElementById("propertiesList");
+        propertiesList.innerHTML = "";
+        Object.keys(response.data).forEach((res) => {
+          const propertyType = response.data[res]["PROPERTY_TYPE"];
+          const propertyStreet = response.data[res]["STREET"];
+          const propertyCity = response.data[res]["CITY"];
+          const propertyState = response.data[res]["STATE"];
+          const propertyZip = response.data[res]["ZIPCODE"];
+
+          const listItem = document.createElement("li");
+          listItem.textContent = `${propertyType}: ${propertyStreet}, ${propertyCity}, ${propertyState}, ${propertyZip}`;
+          propertiesList.appendChild(listItem);
+        });
+      }
+
+      // return response;
     } catch (error) {
       console.log(error);
     }
@@ -304,8 +309,10 @@ const AgentDashboard = (agent) => {
         {/* View your properties */}
 
         <div>
-          <button onClick={handleGetProperties}>Get Properties</button>
-          <ul id="propertiesList"></ul>
+          <button onClick={handleGetProperties} style={styles.button}>
+            Get Properties
+          </button>
+          <ul id="propertiesList" style={styles.container}></ul>
         </div>
       </section>
 
