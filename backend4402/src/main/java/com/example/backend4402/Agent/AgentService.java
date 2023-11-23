@@ -60,4 +60,8 @@ public class AgentService {
         return executeSql(sql);
     }
 
+    public List<Map<String, Object>> getAppointments (String sql) {
+        return executeSql(sql);
+    }
+
 }

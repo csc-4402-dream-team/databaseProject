@@ -73,8 +73,8 @@ public class AgentController {
     @PostMapping("/getAppointments")
     public List<Map<String, Object>> getAppointments(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
-        // implement
-        return null;
+        String sql = "SELECT * FROM APPOINTMENT WHERE AGENT_ID = " + agentID;
+        return agentService.getAppointments(sql);
     }
 
     @PostMapping("/getOffice")

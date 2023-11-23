@@ -36,4 +36,5 @@ VALUES
 INSERT INTO APPOINTMENT (CLIENT_ID, AGENT_ID, PROPERTY_ID, APPT_DATE, APPT_TIME, PURPOSE)
 VALUES
   (1, 1, 1, '2023-10-31', '10:00:00', 'Viewing'),
+  (1, 1, 3, '2023-10-29', '08:00:00', 'Consultation'),
   (2, 2, 2, '2023-11-01', '14:00:00', 'Consultation');

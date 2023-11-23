@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { isEmptyObject } from "jquery";
 
 const AgentDashboard = (agent) => {
   const [propStatus, setPropStatus] = useState("");
@@ -37,6 +36,14 @@ const AgentDashboard = (agent) => {
     propertyType: "",
     propertyCity: "",
     propertyStreet: "",
+  });
+
+  const [appointments, setAppointments] = useState({
+    agentID: AGENT_ID,
+    appointmentID: "",
+    appointmentDate: "",
+    appointmentTime: "",
+    appointmentPurpose: "",
   });
 
   function clearPropForm() {
@@ -128,6 +135,38 @@ const AgentDashboard = (agent) => {
       }
 
       // return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleGetAppointments = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/agent/getAppointments",
+        {
+          agentID: appointments.agentID,
+          appointmentID: appointments.appointmentID,
+          appointmentDate: appointments.appointmentDate,
+          appointmentTime: appointments.appointmentTime,
+          appointmentPurpose: appointments.appointmentPurpose,
+        }
+      );
+      if (response.data != -1) {
+        console.log(response.data);
+        const appointmentsList = document.getElementById("appointmentsList");
+        appointmentsList.innerHTML = "";
+        Object.keys(response.data).forEach((res) => {
+          // const appointmentID = response.data[res]["APPOINTMENT_ID"];
+          const appointmentDATE = response.data[res]["APPT_DATE"];
+          const appointmentTIME = response.data[res]["APPT_TIME"];
+          const appointmentCLIENT = response.data[res]["CLIENT_ID"];
+          const appointmentPURPOSE = response.data[res]["PURPOSE"];
+          const appListItem = document.createElement("li");
+          appListItem.textContent = `Date:${appointmentDATE}, Time: ${appointmentTIME}, Client: ${appointmentCLIENT}, Purpose: ${appointmentPURPOSE}`;
+          appointmentsList.appendChild(appListItem);
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -319,6 +358,10 @@ const AgentDashboard = (agent) => {
       <section style={styles.section}>
         <h2>View Appointments</h2>
         {/* Add content for viewing agent's appointments */}
+        <button onClick={handleGetAppointments} style={styles.button}>
+          Get Appointments
+        </button>
+        <ul id="appointmentsList" style={styles.container}></ul>
       </section>
 
       <section style={styles.section}>
