@@ -66,8 +66,8 @@ public class AgentController {
     @PostMapping("/getProperties")
     public List<Map<String, Object>> getAgentProperties(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
-        // implement
-        return null;
+        String sql = "SELECT * FROM PROPERTY WHERE AGENT_ID = " + agentID;
+        return agentService.getProperties(sql);
     }
 
     @PostMapping("/getAppointments")

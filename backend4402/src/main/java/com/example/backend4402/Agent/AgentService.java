@@ -56,4 +56,8 @@ public class AgentService {
         return executeSql(sql);
     }
 
+    public List<Map<String,Object>> getProperties (String sql) {
+        return executeSql(sql);
+    }
+
 }
