@@ -2,6 +2,8 @@ package com.example.backend4402.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +35,10 @@ public class ClientController {
     public Map<String, Object> getPropertyAgent(@RequestBody Map<String, String> arguments){
         String agentID = arguments.get("agentID");
         String sql = "SELECT * FROM AGENT WHERE AGENT_ID = " + agentID;
-        List<Map<String, Object>> agent = cliService.executeSql(sql); // Call your service method here
+        List<Map<String, Object>> agent = cliService.executeSql(sql); // Call your service method her
+        if(agent.isEmpty()){
+            return null;
+        }
         return agent.get(0);
     }
 
@@ -56,21 +61,43 @@ public class ClientController {
 
     @PostMapping("/getAppointments")
     public List<Map<String, Object>> getAppointments(@RequestBody Map<String, String> arguments){
-        return null;
+        String clientID = arguments.get("clientID");
+        String sql = "SELECT * FROM APPOINTMENT WHERE CLIENT_ID = " + clientID + ";";
+        return cliService.executeSql(sql);
     }
+
     @PostMapping("/getAgents")
     public List<Map<String, Object>> getAgents(@RequestBody Map<String, String> arguments){
-        return null;
+        List<Map<String, Object>> AGENTS = new ArrayList<>();
+        String clientID = arguments.get("clientID");
+        String getAgents = "SELECT * FROM CLIENT_AGENT WHERE CLIENT_ID = " + clientID + ";";
+        List<Map<String, Object>> result = cliService.executeSql(getAgents);
+
+        for(int i = 0; i < result.size(); i++){
+           Map<String, Object> IDS = result.get(i);
+           String currentID = IDS.get("AGENT_ID").toString();
+           String currentAgentQuery = "SELECT * FROM AGENT WHERE AGENT_ID = " +currentID;
+           List<Map<String, Object>> agentResult = cliService.executeSql(currentAgentQuery);
+           if(!agentResult.isEmpty()){
+               AGENTS.add(agentResult.get(0));
+           }
+        }
+        return AGENTS;
     }
 
     @PostMapping("/getTransactions")
     public List<Map<String, Object>> getTransactions(@RequestBody Map<String, String> arguments){
-        return null;
+        String clientID = arguments.get("clientID");
+        String sql = "SELECT * FROM TRANSACTION WHERE CLIENT_ID = " + clientID + ";";
+        return cliService.executeSql(sql);
     }
 
-    @PostMapping("/payTransactions")
-    public List<Map<String, Object>> payTransactions(@RequestBody Map<String, String> arguments){
-        return null;
+    @PostMapping("/payTransaction")
+    public void payTransaction(@RequestBody Map<String, String> arguments){
+        String transactionID = arguments.get("transactionID");
+        LocalDate date = LocalDate.now();
+        String updateSQL = "UPDATE TRANSACTION SET DATE_SENT = '" + date.toString() + "' WHERE TRANSACTION_ID = " + transactionID;
+        cliService.executeSql(updateSQL);
     }
 
 }

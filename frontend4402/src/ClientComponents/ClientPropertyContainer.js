@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import './clientProp.css'; // Assuming this file is in the same directory
 
-const PropertyContainer = (CLIENT_ID) => {
+const PropertyContainer = (props) => {
+  const { CLIENT_ID, updateData } = props; // Extracting CLIENT_ID and updateData from props
   const [properties, setProperties] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [agent, setAgent] = useState({});
@@ -26,7 +27,7 @@ const PropertyContainer = (CLIENT_ID) => {
         "http://localhost:8080/api/client/addAppointment",
         {
           agentID: properties[currentIndex].AGENT_ID,
-          clientID: CLIENT_ID.CLIENT_ID,
+          clientID: CLIENT_ID,
           propertyID: properties[currentIndex].PROPERTY_ID,
           date: appointmentForm.appt_date,
           time: appointmentForm.appt_time,
@@ -37,6 +38,7 @@ const PropertyContainer = (CLIENT_ID) => {
       console.log(response.data);
       if (appointmentID != -1) {
         setApptStatus("Successfully scheduled appointment!");
+        updateData();
       } else {
         setApptStatus("Failed to schedule appointment.");
       }
@@ -74,14 +76,12 @@ const PropertyContainer = (CLIENT_ID) => {
         }
       );
       const agent = response.data;
-
-      console.log("AGENT FOR PROPERTY: " + JSON.stringify(agent));
-
       setAgent(agent);
-      
+      updateData();
     } catch (error) {
       console.log(error);
     }
+    
   };
 
   const handleKeyDown = useCallback(
@@ -111,6 +111,7 @@ const PropertyContainer = (CLIENT_ID) => {
     } else if (direction === 'next') {
       setCurrentIndex(prevIndex => (prevIndex === properties.length - 1 ? 0 : prevIndex + 1));
     }
+    updateData();
     setAgent({});
   };
 
@@ -147,7 +148,7 @@ const PropertyContainer = (CLIENT_ID) => {
         </div>
         <div>
         <section style={styles.section}>
-        <h2>Schedule an Appointment for this {properties[currentIndex].PROPERTY_TYPE} Now!</h2>
+        <h3>Schedule an Appointment for this {properties[currentIndex].PROPERTY_TYPE} Now!</h3>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop:'15px' }} >
             <label style={styles.label}>
               Appointment Date:
@@ -174,18 +175,19 @@ const PropertyContainer = (CLIENT_ID) => {
         
             />
             </label>
+            
+            </div>
             <label style={styles.label}>
-              Purpose:
+              Appointment Purpose:
               <input
                 style={styles.input2}
                 type="text"
                 name="purpose"
+                maxLength={50}
                 value={appointmentForm.purpose}
                 onChange={handleChange}
               />
             </label>
-
-            </div>
             <button style={styles.button} onClick={() => handleAddAppointment()} >Schedule Appointment</button>
             <p>{apptStatus}</p>
       </section>
