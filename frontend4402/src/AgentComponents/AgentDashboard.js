@@ -186,7 +186,7 @@ const AgentDashboard = (agent) => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Agent Dashboard</h1>
-      <div>
+      <div style={styles.profileSection}>
         <p>Agent ID: {AGENT_ID}</p>
         <p>
           Agent Name: {FIRST_NAME} {LAST_NAME}
@@ -488,6 +488,17 @@ const styles = {
     borderRadius: "4px",
     fontSize: "14px",
     resize: "vertical",
+  },
+  profileSection: {
+    fontSize: '14px',
+    display: 'flex',
+    justifyContent: 'space-between', // Distributes content evenly
+    alignItems: 'center', // Aligns items at the center vertically
+    fontWeight: '200',
+    marginBottom: '20px',
+    borderTop: '2px solid #ccc',
+    borderBottom: '2px solid #ccc',
+    paddingBottom: '10px',
   },
 };
 

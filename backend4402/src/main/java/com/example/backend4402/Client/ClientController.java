@@ -14,20 +14,6 @@ public class ClientController {
         this.cliService = myService;
     }
 
-//    @PostMapping("/addClient")
-//    public boolean addClient(@RequestBody Map<String, String> arguments){
-//        String firstName = arguments.get("firstName");
-//        String lastName = arguments.get("lastName");
-//        String email = arguments.get("email");
-//        String phone = arguments.get("phone");
-//        String street = arguments.get("city");
-//        String city = arguments.get("city");
-//        String state = arguments.get("state");
-//        String zipcode = arguments.get("zipcode");
-//        Client newClient = new Client(firstName, lastName, email, phone, street, city, state, zipcode);
-//        return cliService.addClient(newClient);
-//    }
-
     @PostMapping("/getClient")
     public Map<String, Object> getClient(@RequestBody Map<String, String> arguments){
         String clientID = arguments.get("clientID");
@@ -43,10 +29,31 @@ public class ClientController {
         return cliService.executeSql(sql); // Call your service method here
     }
 
-    @PostMapping("/addAppointment")
-    public List<Map<String, Object>> addAppointment(@RequestBody Map<String, String> arguments){
-        return null;
+    @PostMapping("/getPropertyAgent")
+    public Map<String, Object> getPropertyAgent(@RequestBody Map<String, String> arguments){
+        String agentID = arguments.get("agentID");
+        String sql = "SELECT * FROM AGENT WHERE AGENT_ID = " + agentID;
+        List<Map<String, Object>> agent = cliService.executeSql(sql); // Call your service method here
+        return agent.get(0);
     }
+
+    @PostMapping("/addAppointment")
+    public int addAppointment(@RequestBody Map<String, String> arguments) {
+        String agentID = arguments.get("agentID");
+        String clientID = arguments.get("clientID");
+        String propertyID = arguments.get("propertyID");
+        String date = arguments.get("date");
+        String time = arguments.get("time");
+        String purpose = arguments.get("purpose");
+        String sql =
+                "INSERT INTO APPOINTMENT (CLIENT_ID, AGENT_ID, PROPERTY_ID, APPT_DATE, APPT_TIME, PURPOSE) VALUES " +
+                        " (" + clientID + ", " + agentID + ", " + propertyID + ", '" + date + "', '" + time + "', '" + purpose + "');";
+        int result =  cliService.getKey(sql);
+        cliService.addRelationship(clientID, agentID);
+        return result;
+    }
+
+
     @PostMapping("/getAppointments")
     public List<Map<String, Object>> getAppointments(@RequestBody Map<String, String> arguments){
         return null;

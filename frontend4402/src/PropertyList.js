@@ -35,7 +35,9 @@ const PropertySlider = () => {
         {properties.map(property => (
           <div key={property.PROPERTY_ID} className="custom-slide" >
             <h2>{property.PROPERTY_TYPE}</h2>
-            <img className='image' src={property.IMAGE_URL} alt="Property Image" />
+            <div className="image-container"> {/* Wrap the image in a container */}
+              <img className='image' src={property.IMAGE_URL} alt="Property Image" />
+            </div>
             <p>{property.STREET}, {property.CITY}, {property.STATE} - {property.ZIPCODE}</p>
             <p>Price: ${property.LIST_PRICE} Bedrooms: {property.NUM_BEDROOMS} Bathrooms: {property.NUM_BATHROOMS}</p>
             <p>{property.DESCRIPTION}</p>

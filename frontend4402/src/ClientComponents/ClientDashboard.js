@@ -19,7 +19,8 @@ const ClientDashboard = (client) => {
     <div style={styles.container}>
        <div style={styles.container}>
         <h1 style={styles.title}>Client Dashboard</h1>
-          <div>
+          <div style={styles.profileSection}>
+            <p>Client ID: {CLIENT_ID} </p>
             <p>Client Name: {FIRST_NAME} {LAST_NAME}</p>
             <p>Email: {EMAIL}</p>
             <p>Phone: {PHONE}</p>
@@ -111,6 +112,17 @@ const styles = {
     borderRadius: '4px',
     fontSize: '14px',
     resize: 'vertical',
+  },
+  profileSection: {
+    fontSize: '14px',
+    display: 'flex',
+    justifyContent: 'space-between', // Distributes content evenly
+    alignItems: 'center', // Aligns items at the center vertically
+    fontWeight: '200',
+    marginBottom: '20px',
+    borderTop: '2px solid #ccc',
+    borderBottom: '2px solid #ccc',
+    paddingBottom: '10px',
   },
 };
 

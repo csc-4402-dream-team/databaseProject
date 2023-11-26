@@ -7,19 +7,43 @@ import './clientProp.css'; // Assuming this file is in the same directory
 const PropertyContainer = (CLIENT_ID) => {
   const [properties, setProperties] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [agent, setAgent] = useState({});
 
+  const [apptStatus, setApptStatus] = useState();
 
   const [appointmentForm, setAppointmentForm] = useState({
-    clientID: CLIENT_ID,
-    agentID: "",
     propertyID: "",
     appt_date: "",
     appt_time: "",
     purpose: "",
   });
 
+
   const handleAddAppointment = async (event) => {
-    event.preventDefault();
+    try {
+      console.log(appointmentForm);
+      const response = await axios.post(
+        "http://localhost:8080/api/client/addAppointment",
+        {
+          agentID: properties[currentIndex].AGENT_ID,
+          clientID: CLIENT_ID.CLIENT_ID,
+          propertyID: properties[currentIndex].PROPERTY_ID,
+          date: appointmentForm.appt_date,
+          time: appointmentForm.appt_time,
+          purpose: appointmentForm.purpose,
+        }
+      );
+      const appointmentID = response.data;
+      console.log(response.data);
+      if (appointmentID != -1) {
+        setApptStatus("Successfully scheduled appointment!");
+      } else {
+        setApptStatus("Failed to schedule appointment.");
+      }
+    } catch (error) {
+      setApptStatus("Error adding appointment: " + JSON.stringify(error.response.data));
+      console.error("Error adding a appointment", JSON.stringify(error.response.data));
+    }
   };
 
   const handleChange = (e) => {
@@ -41,6 +65,25 @@ const PropertyContainer = (CLIENT_ID) => {
       .catch(error => setProperties(["Error"]));
   }, []);
 
+  const handleGetPropertyAgent = async (curAgent) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/client/getPropertyAgent",
+        {
+          agentID: curAgent,
+        }
+      );
+      const agent = response.data;
+
+      console.log("AGENT FOR PROPERTY: " + JSON.stringify(agent));
+
+      setAgent(agent);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleKeyDown = useCallback(
     (event) => {
       if (event.keyCode === 37) {
@@ -53,6 +96,7 @@ const PropertyContainer = (CLIENT_ID) => {
     },
     [properties.length]
   );
+
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -67,6 +111,7 @@ const PropertyContainer = (CLIENT_ID) => {
     } else if (direction === 'next') {
       setCurrentIndex(prevIndex => (prevIndex === properties.length - 1 ? 0 : prevIndex + 1));
     }
+    setAgent({});
   };
 
   return (
@@ -82,6 +127,19 @@ const PropertyContainer = (CLIENT_ID) => {
             <p>{properties[currentIndex].STREET}, {properties[currentIndex].CITY}, {properties[currentIndex].STATE} - {properties[currentIndex].ZIPCODE}</p>
             <p>Price: ${properties[currentIndex].LIST_PRICE} Bedrooms: {properties[currentIndex].NUM_BEDROOMS} Bathrooms: {properties[currentIndex].NUM_BATHROOMS}</p>
             <p>{properties[currentIndex].DESCRIPTION}</p>
+
+            <button style={styles.button2} onClick={() => handleGetPropertyAgent(properties[currentIndex].AGENT_ID)}  >Get Contact Info</button>
+            {Object.keys(agent).length > 0 && (
+              <div>
+                <p>Agent Information: {agent.FIRST_NAME} {agent.LAST_NAME}, Email: {agent.EMAIL}, Phone: {agent.PHONE}</p>
+              </div>
+            )}
+            {Object.keys(agent).length <= 0 && (
+              <div>
+                <p> Click Above to see Agent Information! </p>
+              </div>
+            )}
+
           </div>
           <div className="arrow right-arrow" onClick={() => navigateProperty('next')}>
             <FontAwesomeIcon icon={faChevronRight} />
@@ -89,7 +147,7 @@ const PropertyContainer = (CLIENT_ID) => {
         </div>
         <div>
         <section style={styles.section}>
-        <h2>Schedule an Appointment</h2>
+        <h2>Schedule an Appointment for this {properties[currentIndex].PROPERTY_TYPE} Now!</h2>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop:'15px' }} >
             <label style={styles.label}>
               Appointment Date:
@@ -105,12 +163,16 @@ const PropertyContainer = (CLIENT_ID) => {
             <label style={styles.label}>
               Appointment Time:
               <input
-                style={styles.input2}
-                type="time"
-                name="appt_time"
-                value={appointmentForm.appt_time}
-                onChange={handleChange}
-              />
+              style={styles.input2}
+              type="time"
+              min="09:00" // Set the minimum time to 09:00 (9 AM)
+              max="17:00" // Set the maximum time to 17:00 (5 PM)
+
+              name="appt_time"
+              value={appointmentForm.appt_time}
+              onChange={handleChange}
+        
+            />
             </label>
             <label style={styles.label}>
               Purpose:
@@ -122,7 +184,10 @@ const PropertyContainer = (CLIENT_ID) => {
                 onChange={handleChange}
               />
             </label>
+
             </div>
+            <button style={styles.button} onClick={() => handleAddAppointment()} >Schedule Appointment</button>
+            <p>{apptStatus}</p>
       </section>
       </div>
         </>
@@ -134,7 +199,11 @@ const PropertyContainer = (CLIENT_ID) => {
 
 const styles = {
   section: {
-    marginBottom: "30px",
+    marginBottom: '30px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   input: {
     width: "100%",
@@ -153,9 +222,19 @@ const styles = {
     borderRadius: "5px",
   },
   button: {
-    width: "100%",
+    width: "80%",
     padding: "10px",
     fontSize: "18px",
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  button2: {
+    width: "150px",
+    padding: "10px",
+    fontSize: "15px",
     backgroundColor: "#4CAF50",
     color: "white",
     border: "none",

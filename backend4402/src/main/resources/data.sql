@@ -38,3 +38,7 @@ VALUES
   (1, 1, 1, '2023-10-31', '10:00:00', 'Viewing'),
   (1, 1, 3, '2023-10-29', '08:00:00', 'Consultation'),
   (2, 2, 2, '2023-11-01', '14:00:00', 'Consultation');
+
+INSERT INTO CLIENT_AGENT (CLIENT_ID, AGENT_ID) VALUES
+    (1,1),
+    (2,2);

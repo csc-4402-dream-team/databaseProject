@@ -31,3 +31,9 @@ code {
   height: 300px; /* Set a fixed height */
   object-fit: cover; /* Maintain aspect ratio and cover the container */
 }
+
+.image-container {
+  width:100%;
+  display: flex;
+  justify-content: center;
+}
