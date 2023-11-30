@@ -7,6 +7,7 @@ const AgentDashboard = (agent) => {
   const [appointments, setAppointments] = useState([]);
   const [clients, setClients] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [offices, setOffices] = useState([]);
 
   const { FIRST_NAME, LAST_NAME, EMAIL, PHONE, LICENSE_NUMBER, AGENT_ID } =
     agent.agent;
@@ -32,6 +33,7 @@ const AgentDashboard = (agent) => {
     clientID: "",
     propertyID: "",
     amount: "",
+    transactionType: "",
     dateSent: null,
   });
 
@@ -53,6 +55,45 @@ const AgentDashboard = (agent) => {
       image: "",
     });
   }
+
+  const handleCreateTransaction = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/agent/addTransaction",
+        {
+          agentID: transactionFormData.agentID,
+          clientID: transactionFormData.clientID,
+          propertyID: transactionFormData.propertyID,
+          amount: transactionFormData.amount,
+          transactionType: transactionFormData.transactionType,
+          dateSent: transactionFormData.dateSent,
+        }
+      );
+      //   setTransactionFormData(response.data);
+      // } catch (error) {
+      //   console.log(error);
+      // }
+      const transactionStat = response.data;
+      console.log(transactionStat);
+      if (transactionStat != -1) {
+        setPropStatus("Successfully created transaction!");
+      } else {
+        setPropStatus("Failed to create transaction.");
+      }
+      setTimeout(clearPropForm, 3000);
+    } catch (error) {
+      setPropStatus("Error creating transaction: " + error.response);
+    }
+  };
+
+  const handleChangeTransaction = (e) => {
+    const { name, value } = e.target;
+    setTransactionFormData({
+      ...transactionFormData,
+      [name]: value,
+    });
+  };
 
   const handleAddProperty = async (event) => {
     event.preventDefault();
@@ -104,6 +145,17 @@ const AgentDashboard = (agent) => {
   }, []);
 
   useEffect(() => {
+    axios
+      .post("http://localhost:8080/api/agent/getOffice", {
+        agentID: AGENT_ID,
+      })
+      .then(async (response) => {
+        setOffices(response.data);
+      })
+      .catch((error) => setOffices(["Error"]));
+  });
+
+  useEffect(() => {
     // Fetch get appointments
     axios
       .post("http://localhost:8080/api/agent/getAppointments", {
@@ -123,6 +175,7 @@ const AgentDashboard = (agent) => {
       })
       .then(async (response) => {
         setClients(response.data);
+        console.log(response.data);
       })
       .catch((error) => setClients(["Error"]));
   }, []);
@@ -140,8 +193,6 @@ const AgentDashboard = (agent) => {
   }, []);
 
   // Needs to be implemented similar to above
-  const handleCreateTransaction = async () => {};
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPropertyFormData({
@@ -368,13 +419,13 @@ const AgentDashboard = (agent) => {
             >
               <h2>Client {index + 1}</h2>
               <p>
-                Name: {client.FIRST_NAME} {client.LAST_NAME}{" "}
+                Name: {client.CLIENT_FIRST_NAME} {client.CLIENT_LAST_NAME}{" "}
               </p>
-              <p> Email: {client.EMAIL}</p>
-              <p> Phone: {client.PHONE}</p>
-              <p>{client.STREET}</p>
-              <p>{client.CITY}</p>
-              <p>{client.ZIPCODE}</p>
+              <p> Email: {client.CLIENT_EMAIL}</p>
+              <p> Phone: {client.CLIENT_PHONE}</p>
+              <p>{client.CLIENT_STREET}</p>
+              <p>{client.CLIENT_CITY}</p>
+              <p>{client.CLIENT_ZIPCODE}</p>
             </div>
           ))}
         </div>
@@ -390,7 +441,7 @@ const AgentDashboard = (agent) => {
               type="text"
               name="propertyType"
               value={transactionFormData.clientID}
-              onChange={handleChange}
+              onChange={handleChangeTransaction}
             />
           </label>
 
@@ -401,7 +452,7 @@ const AgentDashboard = (agent) => {
               type="text"
               name="propertyType"
               value={transactionFormData.propertyID}
-              onChange={handleChange}
+              onChange={handleChangeTransaction}
             />
           </label>
 
@@ -412,7 +463,7 @@ const AgentDashboard = (agent) => {
               type="text"
               name="listPrice"
               value={transactionFormData.amount}
-              onChange={handleChange}
+              onChange={handleChangeTransaction}
             />
           </label>
 
@@ -421,8 +472,8 @@ const AgentDashboard = (agent) => {
             <textarea
               style={styles.input}
               name="description"
-              value={transactionFormData.type}
-              onChange={handleChange}
+              value={transactionFormData.transactionType}
+              onChange={handleChangeTransaction}
             />
           </label>
 
@@ -457,7 +508,23 @@ const AgentDashboard = (agent) => {
 
       <section style={styles.section}>
         <h2>Your Office</h2>
-        {/* Add content for office */}
+        <div style={styles.scrollContainer}>
+          {offices.map((office, index) => (
+            <div
+              key={index}
+              style={{
+                ...styles.appointmentCard,
+                marginRight: index !== transactions.length - 1 ? "20px" : "0",
+              }}
+            >
+              <h2>Office {index + 1}</h2>
+              <p>{office.STREET}</p>
+              <p>{office.CITY}</p>
+              <p>{office.ZIPCODE}</p>
+              <p>{office.PHONE}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );

@@ -60,6 +60,10 @@ public class AgentService {
         return executeSql(sql);
     }
 
+    public List<Map<String,Object>> addTransaction (String sql) {
+        return executeSql(sql);
+    }
+
     public List<Map<String, Object>> getAppointments (String sql) {
         return executeSql(sql);
     }
@@ -69,6 +73,10 @@ public class AgentService {
     }
 
     public List<Map<String, Object>> getTransactions(String sql) {
+        return executeSql(sql);
+    }
+
+    public List<Map<String, Object>> getOffice(String sql) {
         return executeSql(sql);
     }
 

@@ -77,17 +77,10 @@ public class AgentController {
         return agentService.getAppointments(sql);
     }
 
-    @PostMapping("/getOffice")
-    public List<Map<String, Object>> getOffice(@RequestBody Map<String, String> arguments) {
-        String agentID = arguments.get("agentID");
-        // implement
-        return null;
-    }
-
     @PostMapping("/getClients")
     public List<Map<String, Object>> getClients(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
-        String sql = "SELECT * FROM CLIENT";
+        String sql = "SELECT C.CLIENT_ID, C.FIRST_NAME AS CLIENT_FIRST_NAME, C.LAST_NAME AS CLIENT_LAST_NAME, C.EMAIL AS CLIENT_EMAIL, C.PHONE AS CLIENT_PHONE, C.STREET AS CLIENT_STREET, C.CITY AS CLIENT_CITY, C.STATE AS CLIENT_STATE, C.ZIPCODE AS CLIENT_ZIPCODE FROM CLIENT C JOIN CLIENT_AGENT CA ON C.CLIENT_ID = CA.CLIENT_ID WHERE CA.AGENT_ID = " + agentID + ";";
         return agentService.getClients(sql);
     }
 
@@ -97,9 +90,11 @@ public class AgentController {
         String clientID = arguments.get("clientID");
         String amount = arguments.get("Amount");
         String transactionType = arguments.get("transactionType");
+        String propertyID = arguments.get("propertyID");
+        String dateSent = arguments.get("dateSent");
 
-        String sql = "";
-        return null;
+        String sql = "INSERT INTO TRANSACTION (PROPERTY_ID, AGENT_ID, CLIENT_ID, DATE_SENT,AMOUNT, TYPE) VALUES (" + propertyID + "," + agentID  + "," + clientID + ",'" + dateSent+ "'," + amount + ",'" + transactionType + "')";
+        return agentService.addTransaction(sql);
     }
 
     @PostMapping("/getTransactions")
@@ -107,5 +102,12 @@ public class AgentController {
         String agentID = arguments.get("agentID");
         String sql = "SELECT * FROM TRANSACTION WHERE AGENT_ID = " + agentID;
         return agentService.getTransactions(sql);
+    }
+
+    @PostMapping("/getOffice")
+    public List<Map<String, Object>> getOffice(@RequestBody Map<String, String> arguments) {
+        String agentID = arguments.get("agentID");
+        String sql = "SELECT O.OFFICE_ID,O.OFFICE_NAME,O.STREET,O.CITY,O.STATE,O.ZIPCODE,O.PHONE FROM OFFICE O INNER JOIN AGENT A ON O.OFFICE_ID = A.OFFICE_ID WHERE A.AGENT_ID =" + agentID;
+        return agentService.getOffice(sql);
     }
 }
