@@ -88,7 +88,7 @@ public class AgentController {
     public List<Map<String, Object>> addTransaction(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
         String clientID = arguments.get("clientID");
-        String amount = arguments.get("Amount");
+        String amount = arguments.get("amount");
         String transactionType = arguments.get("transactionType");
         String propertyID = arguments.get("propertyID");
         String dateSent = arguments.get("dateSent");

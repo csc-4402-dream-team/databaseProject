@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AgentPropertyContainer from "./AgentPropertyContainer";
 
 const AgentDashboard = (agent) => {
-  const [propStatus, setPropStatus] = useState("");
-  const [properties, setProperties] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [clients, setClients] = useState([]);
   const [transactions, setTransactions] = useState([]);
@@ -12,194 +11,88 @@ const AgentDashboard = (agent) => {
   const { FIRST_NAME, LAST_NAME, EMAIL, PHONE, LICENSE_NUMBER, AGENT_ID } =
     agent.agent;
 
-  const [propertyFormData, setPropertyFormData] = useState({
-    agentID: AGENT_ID,
-    propertyType: "",
-    street: "",
-    city: "",
-    state: "",
-    zipcode: "",
-    listPrice: "",
-    numBeds: "",
-    numBaths: "",
-    squareFootage: "",
-    description: "",
-    propertyStatus: "",
-    image: "",
-  });
-
-  const [transactionFormData, setTransactionFormData] = useState({
-    agentID: AGENT_ID,
-    clientID: "",
-    propertyID: "",
-    amount: "",
-    transactionType: "",
-    dateSent: null,
-  });
-
-  function clearPropForm() {
-    setPropStatus("");
-    setPropertyFormData({
-      agentID: AGENT_ID,
-      propertyType: "",
-      street: "",
-      city: "",
-      state: "",
-      zipcode: "",
-      listPrice: "",
-      numBeds: "",
-      numBaths: "",
-      squareFootage: "",
-      description: "",
-      propertyStatus: "",
-      image: "",
-    });
-  }
-
-  const handleCreateTransaction = async (event) => {
-    event.preventDefault();
+  const refreshData = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/agent/addTransaction",
-        {
-          agentID: transactionFormData.agentID,
-          clientID: transactionFormData.clientID,
-          propertyID: transactionFormData.propertyID,
-          amount: transactionFormData.amount,
-          transactionType: transactionFormData.transactionType,
-          dateSent: transactionFormData.dateSent,
-        }
-      );
-      //   setTransactionFormData(response.data);
-      // } catch (error) {
-      //   console.log(error);
-      // }
-      const transactionStat = response.data;
-      console.log(transactionStat);
-      if (transactionStat != -1) {
-        setPropStatus("Successfully created transaction!");
-      } else {
-        setPropStatus("Failed to create transaction.");
-      }
-      setTimeout(clearPropForm, 3000);
+      const [
+        appointmentsResponse,
+        transactionsResponse,
+        clientsResponse,
+        officesResponse,
+      ] = await Promise.all([
+        axios.post("http://localhost:8080/api/agent/getAppointments", {
+          agentID: AGENT_ID,
+        }),
+        axios.post("http://localhost:8080/api/agent/getTransactions", {
+          agentID: AGENT_ID,
+        }),
+        axios.post("http://localhost:8080/api/agent/getClients", {
+          agentID: AGENT_ID,
+        }),
+        axios.post("http://localhost:8080/api/agent/getOffice", {
+          agentID: AGENT_ID,
+        }),
+      ]);
+
+      setAppointments(appointmentsResponse.data);
+      setTransactions(transactionsResponse.data);
+      setClients(clientsResponse.data);
+      setOffices(officesResponse.data);
     } catch (error) {
-      setPropStatus("Error creating transaction: " + error.response);
+      setAppointments(["Error"]);
+      setTransactions(["Error"]);
+      setClients(["Error"]);
+      setOffices(["Error"]);
     }
   };
 
-  const handleChangeTransaction = (e) => {
-    const { name, value } = e.target;
-    setTransactionFormData({
-      ...transactionFormData,
-      [name]: value,
-    });
-  };
-
-  const handleAddProperty = async (event) => {
-    event.preventDefault();
+  const fetchData = async (apiEndpoint, setDataFunction) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/agent/addProperty",
-        {
-          agentID: propertyFormData.agentID,
-          propertyType: propertyFormData.propertyType,
-          street: propertyFormData.street,
-          city: propertyFormData.city,
-          state: propertyFormData.state,
-          zipcode: propertyFormData.zipcode,
-          listPrice: propertyFormData.listPrice,
-          numBeds: propertyFormData.numBeds,
-          numBaths: propertyFormData.numBaths,
-          squareFootage: propertyFormData.squareFootage,
-          description: propertyFormData.description,
-          propertyStatus: propertyFormData.propertyStatus,
-          image: propertyFormData.image,
-        }
-      );
-      // setFormData(response.data);
-      console.log(propertyFormData);
-      const propertyID = response.data;
-      console.log(response.data);
-      if (propertyID != -1) {
-        setPropStatus("Successfully uploaded property!");
-      } else {
-        setPropStatus("Failed to upload property.");
-      }
-      setTimeout(clearPropForm, 3000);
+      const response = await axios.post(apiEndpoint, {
+        agentID: AGENT_ID,
+      });
+      setDataFunction(response.data);
     } catch (error) {
-      setPropStatus("Error uploading property: " + error.response);
-      console.error("Error adding a property", error.response);
+      setDataFunction(["Error"]);
     }
   };
 
   useEffect(() => {
-    //Fetch get properties
-    axios
-      .post("http://localhost:8080/api/agent/getProperties", {
-        agentID: AGENT_ID,
-      })
-      .then(async (response) => {
-        setProperties(response.data);
-      })
-      .catch((error) => setProperties(["Error"]));
+    fetchData("http://localhost:8080/api/agent/getOffice", setOffices);
   }, []);
 
   useEffect(() => {
-    axios
-      .post("http://localhost:8080/api/agent/getOffice", {
-        agentID: AGENT_ID,
-      })
-      .then(async (response) => {
-        setOffices(response.data);
-      })
-      .catch((error) => setOffices(["Error"]));
-  });
-
-  useEffect(() => {
-    // Fetch get appointments
-    axios
-      .post("http://localhost:8080/api/agent/getAppointments", {
-        agentID: AGENT_ID,
-      })
-      .then(async (response) => {
-        setAppointments(response.data);
-      })
-      .catch((error) => setAppointments(["Error"]));
+    fetchData(
+      "http://localhost:8080/api/agent/getAppointments",
+      setAppointments
+    );
   }, []);
 
   useEffect(() => {
-    // Fetch get clients
-    axios
-      .post("http://localhost:8080/api/agent/getClients", {
-        agentID: AGENT_ID,
-      })
-      .then(async (response) => {
-        setClients(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => setClients(["Error"]));
+    fetchData("http://localhost:8080/api/agent/getClients", setClients);
   }, []);
 
   useEffect(() => {
-    // Fetch get transactions
-    axios
-      .post("http://localhost:8080/api/agent/getTransactions", {
-        agentID: AGENT_ID,
-      })
-      .then(async (response) => {
-        setTransactions(response.data);
-      })
-      .catch((error) => setTransactions(["Error"]));
+    fetchData(
+      "http://localhost:8080/api/agent/getTransactions",
+      setTransactions
+    );
   }, []);
 
-  // Needs to be implemented similar to above
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPropertyFormData({
-      ...propertyFormData,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchData("http://localhost:8080/api/agent/getOffice", setOffices);
+      fetchData(
+        "http://localhost:8080/api/agent/getAppointments",
+        setAppointments
+      );
+      fetchData("http://localhost:8080/api/agent/getClients", setClients);
+      fetchData(
+        "http://localhost:8080/api/agent/getTransactions",
+        setTransactions
+      );
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -213,174 +106,11 @@ const AgentDashboard = (agent) => {
         <p>Phone: {PHONE}</p>
         <p>License: {LICENSE_NUMBER}</p>
       </div>
-      <section style={styles.section}>
-        <h2>List a Property</h2>
-        {/* Add content for listing property and uploading Images */}
-        <form onSubmit={handleAddProperty} style={styles.inputContainer}>
-          <label style={styles.label}>
-            Property Type:
-            <input
-              style={styles.input}
-              type="text"
-              name="propertyType"
-              value={propertyFormData.propertyType}
-              onChange={handleChange}
-            />
-          </label>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "15px",
-            }}
-          >
-            <label style={styles.label}>
-              Street:
-              <input
-                style={styles.input2}
-                type="text"
-                name="street"
-                value={propertyFormData.street}
-                onChange={handleChange}
-              />
-            </label>
 
-            <label style={styles.label}>
-              City:
-              <input
-                style={styles.input2}
-                type="text"
-                name="city"
-                value={propertyFormData.city}
-                onChange={handleChange}
-              />
-            </label>
-
-            <label style={styles.label}>
-              State:
-              <input
-                style={styles.input2}
-                type="text"
-                name="state"
-                value={propertyFormData.state}
-                onChange={handleChange}
-              />
-            </label>
-
-            <label style={styles.label}>
-              Zipcode:
-              <input
-                style={styles.input2}
-                type="text"
-                name="zipcode"
-                value={propertyFormData.zipcode}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-          <label style={styles.label}>
-            List Price:
-            <input
-              style={styles.input}
-              type="text"
-              name="listPrice"
-              value={propertyFormData.listPrice}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Number of Beds:
-            <input
-              style={styles.input}
-              type="text"
-              name="numBeds"
-              value={propertyFormData.numBeds}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Number of Baths:
-            <input
-              style={styles.input}
-              type="text"
-              name="numBaths"
-              value={propertyFormData.numBaths}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Square Footage:
-            <input
-              style={styles.input}
-              type="text"
-              name="squareFootage"
-              value={propertyFormData.squareFootage}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Description:
-            <textarea
-              style={styles.input}
-              name="description"
-              value={propertyFormData.description}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Status:
-            <input
-              style={styles.input}
-              type="text"
-              name="propertyStatus"
-              value={propertyFormData.propertyStatus}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label style={styles.label}>
-            URL to Image:
-            <input
-              style={styles.input}
-              type="text"
-              name="image"
-              value={propertyFormData.image}
-              onChange={handleChange}
-            />
-          </label>
-
-          <button style={styles.button} type="submit">
-            Submit
-          </button>
-        </form>
-        <p>{propStatus}</p>
-      </section>
-
-      <section style={styles.section}>
-        <h2>View your properties</h2>
-        {/* View your properties */}
-        <div style={styles.scrollContainer}>
-          {properties.map((property, index) => (
-            <div
-              key={index}
-              style={{
-                ...styles.appointmentCard,
-                marginRight: index !== properties.length - 1 ? "20px" : "0",
-              }}
-            >
-              <h2>{property.PROPERTY_TYPE}</h2>
-              <p>{property.STREET}</p>
-              <p>{property.CITY}</p>
-              <p>{property.ZIPCODE}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AgentPropertyContainer
+        AGENT_ID={AGENT_ID}
+        updateData={refreshData}
+      ></AgentPropertyContainer>
 
       <section style={styles.section}>
         <h2>View Appointments</h2>
@@ -430,59 +160,6 @@ const AgentDashboard = (agent) => {
           ))}
         </div>
       </section>
-
-      <section style={styles.section}>
-        <h2>Create Transaction</h2>
-        <form onSubmit={handleCreateTransaction} style={styles.inputContainer}>
-          <label style={styles.label}>
-            Client ID:
-            <input
-              style={styles.input}
-              type="text"
-              name="propertyType"
-              value={transactionFormData.clientID}
-              onChange={handleChangeTransaction}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Property ID:
-            <input
-              style={styles.input}
-              type="text"
-              name="propertyType"
-              value={transactionFormData.propertyID}
-              onChange={handleChangeTransaction}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Amount:
-            <input
-              style={styles.input}
-              type="text"
-              name="listPrice"
-              value={transactionFormData.amount}
-              onChange={handleChangeTransaction}
-            />
-          </label>
-
-          <label style={styles.label}>
-            Transaction Type:
-            <textarea
-              style={styles.input}
-              name="description"
-              value={transactionFormData.transactionType}
-              onChange={handleChangeTransaction}
-            />
-          </label>
-
-          <button style={styles.button} type="submit">
-            Submit
-          </button>
-        </form>
-      </section>
-
       <section style={styles.section}>
         <h2>View all Transactions</h2>
         {/* Add content for viewing transactions */}
