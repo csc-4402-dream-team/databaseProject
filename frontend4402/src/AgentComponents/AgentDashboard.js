@@ -3,6 +3,10 @@ import axios from "axios";
 
 const AgentDashboard = (agent) => {
   const [propStatus, setPropStatus] = useState("");
+  const [properties, setProperties] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const { FIRST_NAME, LAST_NAME, EMAIL, PHONE, LICENSE_NUMBER, AGENT_ID } =
     agent.agent;
@@ -29,21 +33,6 @@ const AgentDashboard = (agent) => {
     propertyID: "",
     amount: "",
     dateSent: null,
-  });
-
-  const [properties, setProperties] = useState({
-    agentID: AGENT_ID,
-    propertyType: "",
-    propertyCity: "",
-    propertyStreet: "",
-  });
-
-  const [appointments, setAppointments] = useState({
-    agentID: AGENT_ID,
-    appointmentID: "",
-    appointmentDate: "",
-    appointmentTime: "",
-    appointmentPurpose: "",
   });
 
   function clearPropForm() {
@@ -102,75 +91,53 @@ const AgentDashboard = (agent) => {
     }
   };
 
-  const handleGetProperties = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/agent/getProperties",
-        {
-          agentID: properties.agentID,
-          propertyCity: properties.propertyCity,
-          propertyStreet: properties.propertyStreet,
-          propertyType: properties.propertyType,
-        }
-      );
-      // console.log(response.data); // Log the response to the console
+  useEffect(() => {
+    //Fetch get properties
+    axios
+      .post("http://localhost:8080/api/agent/getProperties", {
+        agentID: AGENT_ID,
+      })
+      .then(async (response) => {
+        setProperties(response.data);
+      })
+      .catch((error) => setProperties(["Error"]));
+  }, []);
 
-      const propertiesResponse = response.data;
-      if (propertiesResponse != -1) {
-        console.log(response.data);
+  useEffect(() => {
+    // Fetch get appointments
+    axios
+      .post("http://localhost:8080/api/agent/getAppointments", {
+        agentID: AGENT_ID,
+      })
+      .then(async (response) => {
+        setAppointments(response.data);
+      })
+      .catch((error) => setAppointments(["Error"]));
+  }, []);
 
-        const propertiesList = document.getElementById("propertiesList");
-        propertiesList.innerHTML = "";
-        Object.keys(response.data).forEach((res) => {
-          const propertyType = response.data[res]["PROPERTY_TYPE"];
-          const propertyStreet = response.data[res]["STREET"];
-          const propertyCity = response.data[res]["CITY"];
-          const propertyState = response.data[res]["STATE"];
-          const propertyZip = response.data[res]["ZIPCODE"];
+  useEffect(() => {
+    // Fetch get clients
+    axios
+      .post("http://localhost:8080/api/agent/getClients", {
+        agentID: AGENT_ID,
+      })
+      .then(async (response) => {
+        setClients(response.data);
+      })
+      .catch((error) => setClients(["Error"]));
+  }, []);
 
-          const listItem = document.createElement("li");
-          listItem.textContent = `${propertyType}: ${propertyStreet}, ${propertyCity}, ${propertyState}, ${propertyZip}`;
-          propertiesList.appendChild(listItem);
-        });
-      }
-
-      // return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleGetAppointments = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/agent/getAppointments",
-        {
-          agentID: appointments.agentID,
-          appointmentID: appointments.appointmentID,
-          appointmentDate: appointments.appointmentDate,
-          appointmentTime: appointments.appointmentTime,
-          appointmentPurpose: appointments.appointmentPurpose,
-        }
-      );
-      if (response.data != -1) {
-        console.log(response.data);
-        const appointmentsList = document.getElementById("appointmentsList");
-        appointmentsList.innerHTML = "";
-        Object.keys(response.data).forEach((res) => {
-          // const appointmentID = response.data[res]["APPOINTMENT_ID"];
-          const appointmentDATE = response.data[res]["APPT_DATE"];
-          const appointmentTIME = response.data[res]["APPT_TIME"];
-          const appointmentCLIENT = response.data[res]["CLIENT_ID"];
-          const appointmentPURPOSE = response.data[res]["PURPOSE"];
-          const appListItem = document.createElement("li");
-          appListItem.textContent = `Date:${appointmentDATE}, Time: ${appointmentTIME}, Client: ${appointmentCLIENT}, Purpose: ${appointmentPURPOSE}`;
-          appointmentsList.appendChild(appListItem);
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    // Fetch get transactions
+    axios
+      .post("http://localhost:8080/api/agent/getTransactions", {
+        agentID: AGENT_ID,
+      })
+      .then(async (response) => {
+        setTransactions(response.data);
+      })
+      .catch((error) => setTransactions(["Error"]));
+  }, []);
 
   // Needs to be implemented similar to above
   const handleCreateTransaction = async () => {};
@@ -346,27 +313,71 @@ const AgentDashboard = (agent) => {
       <section style={styles.section}>
         <h2>View your properties</h2>
         {/* View your properties */}
-
-        <div>
-          <button onClick={handleGetProperties} style={styles.button}>
-            Get Properties
-          </button>
-          <ul id="propertiesList" style={styles.container}></ul>
+        <div style={styles.scrollContainer}>
+          {properties.map((property, index) => (
+            <div
+              key={index}
+              style={{
+                ...styles.appointmentCard,
+                marginRight: index !== properties.length - 1 ? "20px" : "0",
+              }}
+            >
+              <h2>{property.PROPERTY_TYPE}</h2>
+              <p>{property.STREET}</p>
+              <p>{property.CITY}</p>
+              <p>{property.ZIPCODE}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section style={styles.section}>
         <h2>View Appointments</h2>
         {/* Add content for viewing agent's appointments */}
-        <button onClick={handleGetAppointments} style={styles.button}>
-          Get Appointments
-        </button>
-        <ul id="appointmentsList" style={styles.container}></ul>
+        <div style={styles.scrollContainer}>
+          {appointments.map((appointment, index) => (
+            <div
+              key={index}
+              style={{
+                ...styles.appointmentCard,
+                marginRight: index !== appointment.length - 1 ? "20px" : "0",
+              }}
+            >
+              <h2>Appointment {index + 1}</h2>
+              <p>Time: {appointment.APPT_TIME}</p>
+              <p>Date: {appointment.APPT_DATE}</p>
+              <p>Purpose: {appointment.PURPOSE}</p>
+              <p>Client ID: {appointment.CLIENT_ID}</p>
+              <p>Property ID: {appointment.PROPERTY_ID}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section style={styles.section}>
         <h2>View Your Clients</h2>
         {/* Add content for viewing client information */}
+        <div style={styles.scrollContainer}>
+          {clients.map((client, index) => (
+            <div
+              key={index}
+              style={{
+                ...styles.appointmentCard,
+                marginRight: index !== clients.length - 1 ? "20px" : "0",
+              }}
+            >
+              <h2>Client {index + 1}</h2>
+              <p>
+                Name: {client.FIRST_NAME} {client.LAST_NAME}{" "}
+              </p>
+              <p> Email: {client.EMAIL}</p>
+              <p> Phone: {client.PHONE}</p>
+              <p>{client.STREET}</p>
+              <p>{client.CITY}</p>
+              <p>{client.ZIPCODE}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section style={styles.section}>
@@ -424,6 +435,24 @@ const AgentDashboard = (agent) => {
       <section style={styles.section}>
         <h2>View all Transactions</h2>
         {/* Add content for viewing transactions */}
+        <div style={styles.scrollContainer}>
+          {transactions.map((transaction, index) => (
+            <div
+              key={index}
+              style={{
+                ...styles.appointmentCard,
+                marginRight: index !== transactions.length - 1 ? "20px" : "0",
+              }}
+            >
+              <h2>Transaction {index + 1}</h2>
+              <p>Transaction ID: {transaction.TRANSACTION_ID}</p>
+              <p>Client ID: {transaction.CLIENT_ID}</p>
+              <p>Date sent: {transaction.DATE_SENT}</p>
+              <p>Amount: {transaction.AMOUNT}</p>
+              <p>Type: {transaction.TYPE}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section style={styles.section}>
@@ -490,15 +519,32 @@ const styles = {
     resize: "vertical",
   },
   profileSection: {
-    fontSize: '14px',
-    display: 'flex',
-    justifyContent: 'space-between', // Distributes content evenly
-    alignItems: 'center', // Aligns items at the center vertically
-    fontWeight: '200',
-    marginBottom: '20px',
-    borderTop: '2px solid #ccc',
-    borderBottom: '2px solid #ccc',
-    paddingBottom: '10px',
+    fontSize: "14px",
+    display: "flex",
+    justifyContent: "space-between", // Distributes content evenly
+    alignItems: "center", // Aligns items at the center vertically
+    fontWeight: "200",
+    marginBottom: "20px",
+    borderTop: "2px solid #ccc",
+    borderBottom: "2px solid #ccc",
+    paddingBottom: "10px",
+  },
+  section2: {
+    width: "100%",
+    overflowX: "auto",
+    whiteSpace: "nowrap",
+  },
+  scrollContainer: {
+    display: "inline-block",
+  },
+  appointmentCard: {
+    width: "200px",
+    fontSize: "15px",
+    border: "1px solid #ccc",
+    padding: "10px",
+    margin: "10px 0",
+    display: "inline-block",
+    verticalAlign: "top",
   },
 };
 

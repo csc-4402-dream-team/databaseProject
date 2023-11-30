@@ -64,4 +64,12 @@ public class AgentService {
         return executeSql(sql);
     }
 
+    public List<Map<String, Object>> getClients (String sql) {
+        return executeSql(sql);
+    }
+
+    public List<Map<String, Object>> getTransactions(String sql) {
+        return executeSql(sql);
+    }
+
 }

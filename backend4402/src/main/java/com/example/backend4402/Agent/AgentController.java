@@ -87,12 +87,25 @@ public class AgentController {
     @PostMapping("/getClients")
     public List<Map<String, Object>> getClients(@RequestBody Map<String, String> arguments) {
         String agentID = arguments.get("agentID");
-        // implement
-        return null;
+        String sql = "SELECT * FROM CLIENT";
+        return agentService.getClients(sql);
     }
 
     @PostMapping("/addTransaction")
     public List<Map<String, Object>> addTransaction(@RequestBody Map<String, String> arguments) {
+        String agentID = arguments.get("agentID");
+        String clientID = arguments.get("clientID");
+        String amount = arguments.get("Amount");
+        String transactionType = arguments.get("transactionType");
+
+        String sql = "";
         return null;
+    }
+
+    @PostMapping("/getTransactions")
+    public List<Map<String, Object>> getTransactions(@RequestBody Map<String, String> arguments) {
+        String agentID = arguments.get("agentID");
+        String sql = "SELECT * FROM TRANSACTION WHERE AGENT_ID = " + agentID;
+        return agentService.getTransactions(sql);
     }
 }
