@@ -23,7 +23,7 @@ Follow these steps to get the project up and running:
 
 2. Build the project using Maven.
 
-3. Start the Spring Boot application. This will run the backend server on port 8080.
+3. Start the Spring Boot application by running the main class, which is called Backend4402Application. This will run the backend server on port 8080.
 
 ### Frontend (React)
 
@@ -61,7 +61,10 @@ database.
   
 ## Usage
 
-The application provides functionality to manage clients, agents, properties, client inquiries, and property images. Use the web interface to add, view, update, or delete records in the database.
+The application provides functionality to manage clients, agents, properties, client inquiries, and property images. Use the web interface to add, view, update, or delete records in the database. 
+
+## Data Population
+There is data that is automatically populated everytime we start the backend server. This data generates entries for all of the tables in the database. We added two different Agents and Clients that the user can "login" as, with IDs 1 and 2.
 
 ## Authors
 
