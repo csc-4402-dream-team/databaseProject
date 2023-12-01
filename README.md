@@ -52,7 +52,7 @@ database.
 
 ### Accessing the Database console
 
-- Once you have the frontend and backend running, open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the database console (not required).
+- Once you have the frontend and backend running, open your web browser and go to [http://localhost:8080/h2-console](http://localhost:8080/h2-console) to access the database console (not required). The login is username: `user` and there is no password, so leave this entry blank. The URL to connect to is `jdbc:h2:mem:redstickrealty`. You can execute raw SQL queries here to test the structure and integrity of the database.
 
 ### Additional Notes
 
