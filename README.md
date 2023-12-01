@@ -1,4 +1,4 @@
-# Real Estate Agency Database Project
+# Red Stick Realty Database Project
 
 ## Introduction
 
