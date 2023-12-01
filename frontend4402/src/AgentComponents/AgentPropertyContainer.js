@@ -116,10 +116,10 @@ const AgentPropertyContainer = (props) => {
       if (propertyID != -1) {
         setPropStatus("Successfully uploaded property!");
         updateData();
+        setTimeout(clearPropForm, 3000);
       } else {
         setPropStatus("Failed to upload property.");
       }
-      setTimeout(clearPropForm, 3000);
     } catch (error) {
       setPropStatus("Error uploading property: " + error.response);
       console.error("Error adding a property", error.response);

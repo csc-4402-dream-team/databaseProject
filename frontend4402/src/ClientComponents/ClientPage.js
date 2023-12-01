@@ -29,7 +29,7 @@ const ClientPage = () => {
         <h2 style={styles.title}>Enter Client ID</h2>
         <input type="text" name="clientID" placeholder="Client ID" style={styles.input} onChange={handleIDChange} />
         <button style={styles.button} onClick={handleGetClient}>View Information</button>
-       
+        <h3>The following Client IDs are pre-populated: 1, 2</h3>
       </div>
     );
   }else{

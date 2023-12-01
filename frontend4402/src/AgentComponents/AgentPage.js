@@ -40,6 +40,7 @@ const AgentPage = () => {
         <button style={styles.button} onClick={handleGetAgent}>
           View Information
         </button>
+        <h3>The following Agent IDs are pre-populated: 1, 2</h3>
       </div>
     );
   } else {
