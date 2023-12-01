@@ -70,4 +70,7 @@ There is data that is automatically populated everytime we start the backend ser
 
 - [Sadie Forbes](https://github.com/sadief630)
 - Calvin Feldt
-- {Other team members add names here}
+- Aditya Syrvistava
+- Jake Weber
+- Gustavo Coloma
+
